@@ -1,0 +1,207 @@
+/* 공통 스크롤 숨김 */
+.inner-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.inner-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 전체 프레임 */
+.mylinks-frame {
+  background: #eef2f7;
+  min-height: 100vh;
+}
+
+/* 중앙 랩 */
+.mylinks-wrap {
+  max-width: 420px;
+  margin: 0 auto;
+  height: 100vh;
+  background: #f8fafc;
+  padding: 0 16px 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 상단 바 */
+.mylinks-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 14px 0 8px;
+  flex-shrink: 0;
+}
+
+.mylinks-back-btn {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.mylinks-top-title {
+  font-weight: 800;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* 내용 영역 */
+.mylinks-inner {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 90px;
+  box-sizing: border-box;
+}
+
+/* 카드 */
+.mylinks-card {
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* 아바타 스택 */
+.mylinks-avatar-stack {
+  position: relative;
+  width: 64px;
+  height: 44px;
+  flex: 0 0 64px;
+}
+
+.mylinks-avatar-circle-base {
+  position: absolute;
+  top: 4px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #4b5563;
+  overflow: hidden;
+}
+
+.mylinks-avatar-back {
+  left: 4px;
+  z-index: 1;
+}
+
+.mylinks-avatar-front {
+  left: 22px;
+  z-index: 2;
+  box-shadow: 0 0 0 2px #ffffff;
+}
+
+.mylinks-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 카드 텍스트 영역 */
+.mylinks-card-text-wrap {
+  margin-left: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+.mylinks-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mylinks-card-sub {
+  font-size: 13px;
+  color: #4b5563;
+  margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mylinks-card-date {
+  font-size: 12px;
+  color: #9ca3af;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 작은 텍스트 */
+.mylinks-small-muted {
+  font-size: 13px;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+.mylinks-small-muted-error {
+  color: #dc2626;
+}
+
+/* 하단 탭바 */
+.mylinks-bottom-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  z-index: 50;
+}
+
+.mylinks-bottom-inner {
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+}
+
+/* 탭 */
+.mylinks-tab {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  border-top: 2px solid transparent;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.mylinks-tab.active {
+  border-top-color: #4f46e5;
+  color: #4f46e5;
+  font-weight: 700;
+}
+
+.mylinks-tab-icon {
+  font-size: 20px;
+}
+
+.mylinks-tab-label {
+  font-size: 12px;
+}

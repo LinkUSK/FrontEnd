@@ -1,6 +1,8 @@
 // src/pages/ProfileEdit.jsx
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import "../styles/mypage/profileEdit.css";
+import BottomNav from "../components/BottomNav";
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -8,29 +10,6 @@ const TOKEN_KEY = "access_token";
 function getToken() {
   return localStorage.getItem(TOKEN_KEY);
 }
-
-// body 스크롤 막고 .inner-scroll 에만 스크롤
-(function injectInnerScrollStyle() {
-  if (typeof document === "undefined") return;
-  if (document.getElementById("inner-scroll-style")) return;
-  const s = document.createElement("style");
-  s.id = "inner-scroll-style";
-  s.textContent = `
-    body {
-      margin: 0;
-      background: #eef2f7;
-      overflow: hidden;
-    }
-    .inner-scroll {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    .inner-scroll::-webkit-scrollbar {
-      display: none;
-    }
-  `;
-  document.head.appendChild(s);
-})();
 
 async function apiGet(path) {
   const token = getToken();
@@ -48,7 +27,8 @@ async function apiGet(path) {
   } catch {
     data = { message: raw };
   }
-  if (!res.ok) throw new Error(data.message || `GET ${path} failed (${res.status})`);
+  if (!res.ok)
+    throw new Error(data.message || `GET ${path} failed (${res.status})`);
   return data;
 }
 
@@ -69,7 +49,8 @@ async function apiPatch(path, body) {
   } catch {
     data = { message: raw };
   }
-  if (!res.ok) throw new Error(data.message || `PATCH ${path} failed (${res.status})`);
+  if (!res.ok)
+    throw new Error(data.message || `PATCH ${path} failed (${res.status})`);
   return data;
 }
 
@@ -139,7 +120,10 @@ export default function ProfileEdit() {
         setUsername(data?.username || "");
         setMajor(data?.major || "");
       } catch (e) {
-        setBanner({ type: "error", text: e.message || "프로필을 불러오지 못했습니다." });
+        setBanner({
+          type: "error",
+          text: e.message || "프로필을 불러오지 못했습니다.",
+        });
         if (String(e).includes("401")) nav("/login");
       }
     })();
@@ -162,9 +146,12 @@ export default function ProfileEdit() {
       return;
     }
     if (path) {
-      setPhotoPreview(`${API_BASE}${path.startsWith("/") ? path : `/${path}`}`);
+      setPhotoPreview(
+        `${API_BASE}${path.startsWith("/") ? path : `/${path}`}`
+      );
       return;
     }
+    setPhotoPreview("");
   }, [meAvatarCandidate]);
 
   function showOk(msg) {
@@ -236,120 +223,68 @@ export default function ProfileEdit() {
     }
   }
 
-  const S = styles;
-
-  // 하단 탭바
-  function BottomBar() {
-    const path = loc.pathname;
-    const is = (p) =>
-      p === "/home" ? path === "/home" : path.startsWith(p);
-
-    return (
-      <div style={S.bottomWrap}>
-        <div style={S.bottomInner}>
-          <div style={S.tab(is("/home"))} onClick={() => nav("/home")}>
-            <div style={{ fontSize: 20 }}>🏠</div>
-            <div>홈</div>
-          </div>
-          <div style={S.tab(is("/create"))} onClick={() => nav("/create")}>
-            <div style={{ fontSize: 20 }}>✏️</div>
-            <div>재능 등록</div>
-          </div>
-          <div style={S.tab(is("/chat"))} onClick={() => nav("/chat")}>
-            <div style={{ fontSize: 20 }}>💬</div>
-            <div>채팅</div>
-          </div>
-          <div style={S.tab(is("/my"))} onClick={() => nav("/my")}>
-            <div style={{ fontSize: 20 }}>👤</div>
-            <div>마이페이지</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const bannerClass =
+    banner.type === "ok"
+      ? "profileedit-banner profileedit-banner-ok"
+      : banner.type === "error"
+      ? "profileedit-banner profileedit-banner-error"
+      : "profileedit-banner";
 
   return (
-    <div style={S.stage}>
-      <div style={S.card}>
+    <div className="profileedit-frame">
+      <div className="profileedit-card">
         {/* 헤더 */}
-        <div style={S.headerRow}>
-          <button onClick={() => nav(-1)} style={S.backBtn}>
+        <div className="profileedit-header-row">
+          <button
+            type="button"
+            className="profileedit-back-btn"
+            onClick={() => nav(-1)}
+          >
             ←
           </button>
-          <div style={S.title}>프로필 수정</div>
+          <div className="profileedit-title">프로필 수정</div>
         </div>
 
         {/* 배너 */}
-        <div
-          style={{
-            ...S.banner,
-            ...(banner.type === "ok"
-              ? {
-                  background: "#ecfdf5",
-                  borderColor: "#a7f3d0",
-                  color: "#065f46",
-                }
-              : banner.type === "error"
-              ? {
-                  background: "#fef2f2",
-                  borderColor: "#fecaca",
-                  color: "#991b1b",
-                }
-              : {}),
-          }}
-        >
-          {banner.text}
-        </div>
+        <div className={bannerClass}>{banner.text}</div>
 
         {/* 내용 */}
-        <form onSubmit={handleSubmit} style={S.form}>
-          <div className="inner-scroll" style={S.scrollArea}>
-            <label style={S.label}>
-              이름 <span style={S.required}>*</span>
+        <form onSubmit={handleSubmit} className="profileedit-form">
+          <div className="inner-scroll profileedit-scroll-area">
+            <label className="profileedit-label">
+              이름 <span className="profileedit-required">*</span>
             </label>
             <input
-              style={S.input}
+              className="profileedit-input"
               placeholder="실명 입력"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               maxLength={30}
             />
 
-            <label style={S.label}>
-              전공 <span style={S.required}>*</span>
+            <label className="profileedit-label">
+              전공 <span className="profileedit-required">*</span>
             </label>
             <input
-              style={S.input}
+              className="profileedit-input"
               placeholder="전공 입력"
               value={major}
               onChange={(e) => setMajor(e.target.value)}
             />
 
-            <div style={{ marginTop: 12 }}>
-              <div style={S.label}>프로필 사진</div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 12,
-                  marginTop: 8,
-                }}
-              >
-                <div style={S.photoWrap}>
+            <div className="profileedit-photo-section">
+              <div className="profileedit-label">프로필 사진</div>
+              <div className="profileedit-photo-row">
+                <div className="profileedit-photo-wrap">
                   {photoPreview ? (
                     <img
                       alt="preview"
                       src={photoPreview}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        borderRadius: "50%",
-                      }}
+                      className="profileedit-photo-img"
                       onError={() => setPhotoPreview("")}
                     />
                   ) : (
-                    <div style={{ fontSize: 22, color: "#94a3b8" }}>📷</div>
+                    <div className="profileedit-photo-placeholder">📷</div>
                   )}
                 </div>
                 <input
@@ -361,7 +296,7 @@ export default function ProfileEdit() {
                 />
                 <button
                   type="button"
-                  style={S.uploadBtn}
+                  className="profileedit-upload-btn"
                   onClick={() => fileInputRef.current?.click()}
                 >
                   ⬆ 업로드
@@ -373,7 +308,7 @@ export default function ProfileEdit() {
           {/* 하단 고정 저장 버튼 */}
           <button
             type="submit"
-            style={{ ...S.primaryBtn, marginTop: 10 }}
+            className="profileedit-primary-btn"
             disabled={busy}
           >
             {busy ? "저장 중…" : "저장"}
@@ -381,138 +316,7 @@ export default function ProfileEdit() {
         </form>
       </div>
 
-      <BottomBar />
+      <BottomNav />
     </div>
   );
 }
-
-const styles = {
-  stage: {
-    minHeight: "100vh",
-    background: "#f1f5f9",
-    display: "flex",
-    justifyContent: "center",
-  },
-  card: {
-    width: "100%",
-    maxWidth: 420,
-    height: "100vh",
-    background: "#ffffff",
-    borderRadius: 0,
-    boxShadow: "0 0 0 rgba(0,0,0,0)",
-    boxSizing: "border-box",
-    padding: "0 24px 80px", // 아래 버튼 + 탭바 여유
-    display: "flex",
-    flexDirection: "column",
-    minHeight: 0,
-  },
-  headerRow: {
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-    paddingTop: 12,
-    paddingBottom: 8,
-  },
-  backBtn: {
-    appearance: "none",
-    border: 0,
-    background: "transparent",
-    fontSize: 18,
-    cursor: "pointer",
-    width: 32,
-    height: 32,
-    borderRadius: 8,
-  },
-  title: { fontWeight: 800, fontSize: 18 },
-  banner: {
-    borderRadius: 12,
-    border: "1px solid #e5e7eb",
-    background: "#f8fafc",
-    color: "#0f172a",
-    padding: "10px 12px",
-    fontSize: 12,
-    marginBottom: 8,
-  },
-  form: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    minHeight: 0,
-  },
-  scrollArea: {
-    flex: 1,
-    overflowY: "auto",
-    overflowX: "hidden",
-    paddingBottom: 8,
-    boxSizing: "border-box",
-  },
-  label: {
-    fontSize: 12,
-    color: "#374151",
-    fontWeight: 600,
-    marginTop: 4,
-    marginBottom: 6,
-  },
-  required: { color: "#2563eb", fontWeight: 800, marginLeft: 2 },
-  input: {
-    width: "100%",
-    border: "1px solid #e5e7eb",
-    borderRadius: 12,
-    padding: "12px 12px",
-    outline: "none",
-    background: "#fff",
-    fontSize: 14,
-    boxSizing: "border-box",
-  },
-  photoWrap: {
-    width: 72,
-    height: 72,
-    borderRadius: "50%",
-    background: "#f1f5f9",
-    border: "1px solid #e5e7eb",
-    display: "grid",
-    placeItems: "center",
-    overflow: "hidden",
-    boxSizing: "border-box",
-  },
-  uploadBtn: {
-    border: "1px solid #e5e7eb",
-    background: "#fff",
-    padding: "8px 12px",
-    borderRadius: 10,
-    fontWeight: 700,
-    cursor: "pointer",
-    fontSize: 12,
-  },
-  primaryBtn: {
-    width: "100%",
-    background: "#2563ff",
-    color: "#fff",
-    border: 0,
-    borderRadius: 12,
-    padding: "14px 12px",
-    fontWeight: 800,
-    cursor: "pointer",
-    marginTop: 8,
-    boxSizing: "border-box",
-  },
-  bottomWrap: {
-    position: "fixed",
-    left: 0,
-    right: 0,
-    bottom: 0,
-    background: "#fff",
-    borderTop: "1px solid #e5e7eb",
-  },
-  bottomInner: { maxWidth: 420, margin: "0 auto", display: "flex" },
-  tab: (active) => ({
-    flex: 1,
-    textAlign: "center",
-    padding: "8px 0",
-    borderTop: active ? "2px solid #4f46e5" : "2px solid transparent",
-    color: active ? "#4f46e5" : "#94a3b8",
-    fontSize: 12,
-    fontWeight: active ? 700 : 400,
-    cursor: "pointer",
-  }),
-};

@@ -1,0 +1,273 @@
+/* 공통: 스크롤 숨김 */
+.inner-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.inner-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 로딩 상태 */
+.userprofile-loading {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #eef2f7;
+}
+
+/* 전체 프레임 */
+.userprofile-frame {
+  min-height: 100vh;
+  background: #eef2f7;
+  display: flex;
+  justify-content: center;
+}
+
+/* 카드 래퍼 */
+.userprofile-wrap {
+  max-width: 420px;
+  width: 100%;
+  height: 100vh;
+  max-height: 820px;
+  background: #f8fafc;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 내부 스크롤 영역 */
+.userprofile-inner {
+  flex: 1;
+  overflow-y: auto;
+  padding: 12px 16px 24px;
+  box-sizing: border-box;
+}
+
+/* 상단 바 */
+.userprofile-topbar {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.userprofile-back-btn {
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 4px;
+}
+
+.userprofile-top-title {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+/* 메인 카드 */
+.userprofile-main-card {
+  background: #ffffff;
+  border-radius: 24px;
+  border: 1px solid #e5e7eb;
+  padding: 16px;
+  box-sizing: border-box;
+  margin-bottom: 16px;
+}
+
+/* 메인 헤더 (아바타 + 기본 정보) */
+.userprofile-main-header {
+  display: flex;
+  gap: 12px;
+}
+
+/* 아바타 */
+.userprofile-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.userprofile-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* 메인 정보 영역 */
+.userprofile-main-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.userprofile-name-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.userprofile-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+/* 인증 배지 */
+.userprofile-verify-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.userprofile-verify-icon {
+  font-size: 12px;
+}
+
+/* 정보 라인 */
+.userprofile-info-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #4b5563;
+  margin-top: 4px;
+}
+
+.userprofile-info-row-link {
+  color: #2563eb;
+  word-break: break-all;
+}
+
+.userprofile-email-link {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+/* 통계 영역 */
+.userprofile-stats-row {
+  display: flex;
+  border-top: 1px solid #e5e7eb;
+  margin-top: 12px;
+  padding-top: 12px;
+  justify-content: space-between;
+  text-align: center;
+}
+
+.userprofile-stat {
+  flex: 1;
+}
+
+.userprofile-stat-label {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-bottom: 4px;
+}
+
+.userprofile-stat-value {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.userprofile-stat-value-rating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.userprofile-rating-star-main {
+  color: #f59e0b;
+}
+
+/* 통계 구분선 */
+.userprofile-stat-divider {
+  width: 1px;
+  background: #e5e7eb;
+  margin: 0 8px;
+}
+
+/* 후기 섹션 */
+.userprofile-reviews-section {
+  margin-top: 8px;
+}
+
+.userprofile-reviews-title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 8px;
+}
+
+.userprofile-reviews-empty {
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* 후기 카드 */
+.userprofile-review-card {
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 14px;
+  margin-top: 10px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.userprofile-review-card:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px rgba(79, 70, 229, 0.25);
+}
+
+/* 후기 헤더 */
+.userprofile-review-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.userprofile-review-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+/* 별점 */
+.userprofile-review-stars {
+}
+
+.userprofile-review-star {
+  color: #e5e7eb;
+  font-size: 14px;
+}
+
+.userprofile-review-star.filled {
+  color: #fbbf24;
+}
+
+/* 후기 내용 / 날짜 */
+.userprofile-review-body {
+  font-size: 13px;
+  color: #111827;
+  margin-top: 4px;
+}
+
+.userprofile-review-date {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #94a3b8;
+}

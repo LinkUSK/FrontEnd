@@ -1,0 +1,564 @@
+/* 전체 스테이지 배경 */
+.chatroom-stage {
+    min-height: 100vh;
+    background: #f1f5f9;
+    display: flex;
+    justify-content: center;
+}
+
+/* 중앙 카드 */
+.chatroom-card {
+    width: 100%;
+    max-width: 420px;
+    height: 100vh;
+    max-height: 820px;
+    background: #ffffff;
+    border-radius: 0;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    box-sizing: border-box;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    position: relative; /* 오버레이/첨부 박스 기준 */
+}
+
+/* 상단바 */
+.chatroom-top {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    box-sizing: border-box;
+}
+
+/* 뒤로가기 버튼 */
+.chatroom-back-btn {
+    border: 0;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* 상대 프로필 영역 */
+.chatroom-top-titlebox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.chatroom-top-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.chatroom-top-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.chatroom-top-namebox {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.1;
+}
+
+.chatroom-top-name {
+    font-weight: 800;
+    font-size: 14px;
+    color: #0f172a;
+}
+
+.chatroom-top-sub {
+    font-size: 11px;
+    color: #6b7280;
+    margin-top: 2px;
+}
+
+.chatroom-top-fallback {
+    font-weight: 800;
+}
+
+/* 상단 오른쪽 영역 */
+.chatroom-top-right {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.chatroom-status-text {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.chatroom-menu-btn {
+    border: 0;
+    background: transparent;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 2px 4px;
+    line-height: 1;
+}
+
+/* 상단 LinkU 버튼 */
+.chatroom-linku-btn {
+    border-radius: 999px;
+    border: 0;
+    padding: 6px 14px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    background: #2563eb;
+    color: #ffffff;
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.2);
+    white-space: nowrap;
+}
+
+.chatroom-linku-btn.disabled {
+    background: #e5e7eb;
+    color: #6b7280;
+    cursor: default;
+    box-shadow: none;
+}
+
+/* 상단 메뉴 (채팅방 나가기) */
+.chatroom-menu-wrap {
+    position: absolute;
+    top: 44px;
+    right: 12px;
+    z-index: 60;
+}
+
+.chatroom-menu-panel {
+    min-width: 170px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chatroom-menu-status {
+    font-size: 12px;
+    color: #64748b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.chatroom-menu-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.chatroom-menu-leave {
+    border: 0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    background: #fee2e2;
+    color: #b91c1c;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+/* 메시지 리스트 영역 */
+.chatroom-list {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 12px;
+    background: #fafbff;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    box-sizing: border-box;
+}
+
+.chatroom-list::-webkit-scrollbar {
+    display: none; /* Chrome/Safari */
+}
+
+/* 비어 있을 때 */
+.chatroom-empty {
+    color: #94a3b8;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* 날짜 구분선 */
+.chatroom-date-divider {
+    text-align: center;
+    margin: 16px 0 10px;
+}
+
+.chatroom-date-label {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    color: #6b7280;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+/* 일반 텍스트 메시지 버블 */
+.chatroom-bubble-row {
+    display: flex;
+    margin-bottom: 2px;
+    align-items: flex-end;
+}
+
+.chatroom-bubble {
+    max-width: 70%;
+    padding: 8px 10px;
+    border-radius: 14px;
+    line-height: 1.4;
+    font-size: 14px;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
+.chatroom-bubble-me {
+    background: #4f46e5;
+    color: #ffffff;
+    margin-left: auto;
+    border-top-right-radius: 4px;
+}
+
+.chatroom-bubble-other {
+    background: #e5e7eb;
+    color: #111827;
+    margin-right: auto;
+    border-top-left-radius: 4px;
+}
+
+/* 시간 표시 */
+.chatroom-time-me,
+.chatroom-time-other {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-bottom: 6px;
+    margin-top: 2px;
+}
+
+.chatroom-time-me {
+    text-align: right;
+    padding-right: 4px;
+}
+
+.chatroom-time-other {
+    text-align: left;
+    padding-left: 44px;
+}
+
+/* 상대 아바타 */
+.chatroom-other-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    overflow: hidden;
+    margin-right: 8px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.chatroom-other-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.chatroom-other-avatar-spacer {
+    width: 32px;
+    height: 32px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+/* 시스템/공지 메시지 */
+.chatroom-system-wrap {
+    display: flex;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.chatroom-system-bubble {
+    width: 88%;
+    max-width: 360px;
+    padding: 8px 14px;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.chatroom-system-bubble.review {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.chatroom-system-review-btn {
+    margin: 0 auto;
+    padding: 6px 14px;
+    border-radius: 999px;
+    border: 0;
+    font-size: 12px;
+    font-weight: 600;
+    background: #2563eb;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+/* LinkU 제안 카드 */
+.chatroom-linku-propose-wrap {
+    display: flex;
+    justify-content: center;
+}
+
+.chatroom-linku-card {
+    width: 90%;
+    max-width: 360px;
+    border-radius: 16px;
+    border: 1px solid #bfdbfe;
+    background: #eff6ff;
+    padding: 12px;
+    font-size: 13px;
+    color: #0f172a;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+.chatroom-linku-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #1d4ed8;
+}
+
+.chatroom-linku-body {
+    margin-bottom: 10px;
+}
+
+.chatroom-linku-btnrow {
+    display: flex;
+    gap: 8px;
+}
+
+.chatroom-linku-accept,
+.chatroom-linku-reject {
+    flex: 1;
+    border-radius: 999px;
+    border: 0;
+    padding: 8px 0;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.chatroom-linku-accept {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.chatroom-linku-reject {
+    background: #e5e7eb;
+    color: #374151;
+    font-weight: 600;
+}
+
+.chatroom-linku-wait {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.chatroom-linku-status {
+    font-size: 12px;
+}
+
+.chatroom-linku-status.accepted {
+    color: #16a34a;
+}
+
+.chatroom-linku-status.rejected {
+    color: #b91c1c;
+}
+
+/* 하단 영역 */
+.chatroom-bottom {
+    flex-shrink: 0;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.chatroom-bottom-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.chatroom-plus-btn {
+    border: 1px solid #e5e7eb;
+    border-radius: 999px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.chatroom-input {
+    flex: 1;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 10px 12px;
+    outline: none;
+}
+
+.chatroom-send-btn {
+    border: 0;
+    border-radius: 12px;
+    padding: 8px 18px;
+    background: #4f46e5;
+    color: #ffffff;
+    font-weight: 700;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+/* 후기 보내기 버튼 */
+.chatroom-action-card {
+    border-radius: 14px;
+    border: 1px solid #4f46e5;
+    background: #f9fafb;
+    padding: 10px 14px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: #4f46e5;
+    cursor: pointer;
+    width: 90%;
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+/* 플러스 눌렀을 때 첨부 메뉴 */
+.chatroom-attach-panel {
+    position: absolute;
+    left: 12px;
+    background: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 25px rgba(15, 23, 42, 0.18);
+    padding: 8px 0;
+    display: flex;
+    flex-direction: column;
+    width: 120px;
+    gap: 2px;
+    z-index: 70;
+}
+
+.chatroom-attach-item {
+    padding: 6px 12px;
+    font-size: 13px;
+    color: #111827;
+    text-align: left;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* LinkU 제안 확인 오버레이 */
+.chatroom-confirm-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 80;
+}
+
+.chatroom-confirm-box {
+    background: #eef4ff;
+    border-radius: 16px;
+    border: 1px solid #dbeafe;
+    padding: 16px 20px;
+    min-width: 260px;
+    max-width: 320px;
+    box-shadow: 0 15px 30px rgba(15, 23, 42, 0.25);
+}
+
+.chatroom-confirm-text {
+    font-size: 13px;
+    color: #0f172a;
+    text-align: center;
+    margin-bottom: 12px;
+}
+
+.chatroom-confirm-btn-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.chatroom-confirm-yes,
+.chatroom-confirm-no {
+    flex: 1;
+    border-radius: 999px;
+    border: 0;
+    padding: 8px 0;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.chatroom-confirm-yes {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.chatroom-confirm-no {
+    background: #ffffff;
+    color: #4b5563;
+    font-weight: 600;
+    box-shadow: 0 0 0 1px #e5e7eb;
+}

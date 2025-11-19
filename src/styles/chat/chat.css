@@ -1,0 +1,134 @@
+/* 전체 래퍼 */
+.chat-wrap {
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: #f8fafc;
+  padding-bottom: 6px;
+}
+
+/* 상단 타이틀 영역 */
+.chat-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+.chat-title {
+  font-weight: 800;
+  font-size: 18px;
+}
+
+/* 채팅 리스트 영역 */
+.chat-list {
+  padding: 12px;
+  display: grid;
+  gap: 8px;
+}
+
+/* 개별 채팅 아이템 */
+.chat-item {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 12px;
+  cursor: pointer;
+}
+
+/* 아바타 + 뱃지 래퍼 */
+.chat-avatar-wrap {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+/* 프로필 이미지 */
+.chat-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #e5e7eb;
+}
+
+/* 아바타 위 빨간 뱃지 (안읽음 개수) */
+.chat-avatar-badge {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+  box-sizing: border-box;
+}
+
+/* 가운데 텍스트 영역 */
+.chat-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 닉네임 / 전공 */
+.chat-name {
+  font-weight: 700;
+}
+
+/* 마지막 메시지 (2줄까지만 노출, 나머지는 ... ) */
+.chat-last {
+  color: #64748b;
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* 최대 2줄 */
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+/* 오른쪽 메타 정보 영역 (시간, 안읽음 뱃지 등) */
+.chat-meta {
+  margin-left: auto;
+  text-align: right;
+}
+
+/* 시간 텍스트 */
+.chat-time {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* 오른쪽 큰 뱃지 (현재 주석 처리된 용도) */
+.chat-badge {
+  margin-top: 6px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  display: inline-grid;
+  place-items: center;
+  padding: 0 6px;
+}
+
+/* 빈 상태 / 로딩 상태 */
+.chat-empty {
+  padding: 16px;
+  color: #94a3b8;
+  text-align: center;
+}

@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
+import "../styles/chat/chatRoom.css";
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -379,402 +380,44 @@ export default function ChatRoom() {
     }
   }, [wsStatus, initialDraft, me, receiverId, roomId, loc, nav]);
 
-  /* ===== 스타일 ===== */
-  const styles = {
-    stage: {
-      minHeight: "100vh",
-      background: "#f1f5f9",
-      display: "flex",
-      justifyContent: "center",
-    },
-    card: {
-      width: "100%",
-      maxWidth: 420,
-      height: "100vh",
-      maxHeight: 820,
-      background: "#ffffff",
-      borderRadius: 0,
-      boxShadow: "0 0 0 rgba(0,0,0,0)",
-      boxSizing: "border-box",
-      padding: 0,
-      display: "flex",
-      flexDirection: "column",
-      minHeight: 0,
-      position: "relative", // 🔹 오버레이/첨부 박스 기준
-    },
-    top: {
-      position: "relative",
-      flexShrink: 0,
-      display: "flex",
-      alignItems: "center",
-      gap: 10,
-      padding: "10px 12px",
-      background: "#fff",
-      borderBottom: "1px solid #e5e7eb",
-      boxSizing: "border-box",
-    },
-    topTitleBox: {
-      display: "flex",
-      alignItems: "center",
-      gap: 8,
-      cursor: "pointer",
-    },
-    topAvatar: {
-      width: 32,
-      height: 32,
-      borderRadius: "50%",
-      background: "#e2e8f0",
-      overflow: "hidden",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontSize: 18,
-      flexShrink: 0,
-    },
-    topAvatarImg: {
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      display: "block",
-    },
-    topNameBox: {
-      display: "flex",
-      flexDirection: "column",
-      lineHeight: 1.1,
-    },
-    topName: {
-      fontWeight: 800,
-      fontSize: 14,
-      color: "#0f172a",
-    },
-    topSub: {
-      fontSize: 11,
-      color: "#6b7280",
-      marginTop: 2,
-    },
-    list: {
-      flex: 1,
-      overflowY: "auto",
-      overflowX: "hidden",
-      padding: 12,
-      background: "#fafbff",
-      scrollbarWidth: "none",
-      msOverflowStyle: "none",
-      boxSizing: "border-box",
-    },
-    bubbleRow: { display: "flex", marginBottom: 2, alignItems: "flex-end" },
-    bubble: {
-      maxWidth: "70%",
-      padding: "8px 10px",
-      borderRadius: 14,
-      lineHeight: 1.4,
-      fontSize: 14,
-      wordBreak: "break-word",
-      whiteSpace: "pre-wrap",
-    },
-    meBubble: {
-      background: "#4f46e5",
-      color: "#fff",
-      marginLeft: "auto",
-      borderTopRightRadius: 4,
-    },
-    otherBubble: {
-      background: "#e5e7eb",
-      color: "#111827",
-      marginRight: "auto",
-      borderTopLeftRadius: 4,
-    },
-    bottomWrap: {
-      flexShrink: 0,
-      background: "#fff",
-      borderTop: "1px solid #e5e7eb",
-      display: "flex",
-      flexDirection: "column",
-      gap: 8,
-      padding: 10,
-      boxSizing: "border-box",
-    },
-    bottomRow: {
-      display: "flex",
-      gap: 8,
-      alignItems: "center",
-    },
-    plusBtn: {
-      border: "1px solid #e5e7eb",
-      borderRadius: 999,
-      width: 34,
-      height: 34,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      background: "#fff",
-      cursor: "pointer",
-      fontSize: 18,
-    },
-    input: {
-      flex: 1,
-      border: "1px solid #e5e7eb",
-      borderRadius: 12,
-      padding: "10px 12px",
-      outline: "none",
-    },
-    sendBtn: {
-      border: 0,
-      borderRadius: 12,
-      padding: "8px 18px",
-      background: "#4f46e5",
-      color: "#fff",
-      fontWeight: 700,
-      cursor: "pointer",
-      fontSize: 14,
-    },
-    statusText: { fontSize: 12, color: "#64748b" },
-    topRightBox: {
-      marginLeft: "auto",
-      display: "flex",
-      alignItems: "center",
-      gap: 6,
-    },
-    menuButton: {
-      border: 0,
-      background: "transparent",
-      fontSize: 20,
-      cursor: "pointer",
-      padding: "2px 4px",
-      lineHeight: 1,
-    },
-    menuWrap: {
-      position: "absolute",
-      top: 44,
-      right: 12,
-      zIndex: 60,
-    },
-    menuPanel: {
-      minWidth: 170,
-      background: "#fff",
-      border: "1px solid #e5e7eb",
-      borderRadius: 12,
-      boxShadow: "0 10px 25px rgba(15,23,42,0.18)",
-      padding: 10,
-      display: "flex",
-      flexDirection: "column",
-      gap: 8,
-    },
-    menuStatusRow: {
-      fontSize: 12,
-      color: "#64748b",
-      display: "flex",
-      alignItems: "center",
-      gap: 6,
-      paddingBottom: 6,
-      borderBottom: "1px solid #e5e7eb",
-    },
-    menuDot: (color) => ({
-      width: 8,
-      height: 8,
-      borderRadius: "50%",
-      background: color,
-    }),
-    menuItemDanger: {
-      border: 0,
-      borderRadius: 8,
-      padding: "8px 10px",
-      background: "#fee2e2",
-      color: "#b91c1c",
-      fontSize: 13,
-      fontWeight: 600,
-      textAlign: "left",
-      cursor: "pointer",
-    },
-    dateDivider: {
-      textAlign: "center",
-      margin: "16px 0 10px",
-    },
-    dateLabel: {
-      display: "inline-block",
-      padding: "4px 12px",
-      borderRadius: 999,
-      background: "#e5e7eb",
-      color: "#6b7280",
-      fontSize: 11,
-      fontWeight: 500,
-    },
-    timeRowMe: {
-      fontSize: 11,
-      color: "#9ca3af",
-      textAlign: "right",
-      marginBottom: 6,
-      marginTop: 2,
-      paddingRight: 4,
-    },
-    timeRowOther: {
-      fontSize: 11,
-      color: "#9ca3af",
-      textAlign: "left",
-      marginBottom: 6,
-      marginTop: 2,
-      paddingLeft: 44,
-    },
-    otherAvatar: {
-      width: 32,
-      height: 32,
-      borderRadius: "50%",
-      background: "#e2e8f0",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      fontSize: 18,
-      overflow: "hidden",
-      marginRight: 8,
-      flexShrink: 0,
-      cursor: "pointer",
-    },
-    otherAvatarImg: {
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      display: "block",
-    },
-    otherAvatarSpacer: {
-      width: 32,
-      height: 32,
-      marginRight: 8,
-      flexShrink: 0,
-    },
-    actionCard: {
-      borderRadius: 14,
-      border: "1px solid #4f46e5",
-      background: "#f9fafb",
-      padding: "10px 14px",
-      textAlign: "center",
-      fontWeight: 700,
-      fontSize: 14,
-      color: "#4f46e5",
-      cursor: "pointer",
-      width: "90%",
-      maxWidth: 360,
-      margin: "0 auto",
-    },
-    linkuCard: {
-      width: "90%",
-      maxWidth: 360,
-      borderRadius: 16,
-      border: "1px solid #bfdbfe",
-      background: "#eff6ff",
-      padding: 12,
-      fontSize: 13,
-      color: "#0f172a",
-      boxSizing: "border-box",
-      marginBottom: 10,
-    },
-    systemNoticeWrap: {
-      display: "flex",
-      justifyContent: "center",
-      margin: "10px 0",
-    },
-    systemNoticeBubble: {
-      width: "88%",
-      maxWidth: 360,
-      padding: "8px 14px",
-      borderRadius: 999,
-      background: "#eff6ff",
-      color: "#2563eb",
-      fontSize: 12,
-      fontWeight: 600,
-      textAlign: "center",
-      lineHeight: 1.5,
-    },
-    // 상단 LinkU 버튼
-    linkuTopBtn: (disabled) => ({
-      borderRadius: 999,
-      border: 0,
-      padding: "6px 14px",
-      fontSize: 13,
-      fontWeight: 700,
-      cursor: disabled ? "default" : "pointer",
-      background: disabled ? "#e5e7eb" : "#2563eb",
-      color: disabled ? "#6b7280" : "#ffffff",
-      boxShadow: disabled ? "none" : "0 0 0 1px rgba(37,99,235,0.2)",
-      whiteSpace: "nowrap",
-    }),
-    // 플러스 눌렀을 때 첨부 메뉴 (bottom은 동적으로 계산)
-    attachPanel: {
-      position: "absolute",
-      left: 12,
-      background: "#ffffff",
-      borderRadius: 14,
-      border: "1px solid #e5e7eb",
-      boxShadow: "0 10px 25px rgba(15,23,42,0.18)",
-      padding: "8px 0",
-      display: "flex",
-      flexDirection: "column",
-      width: 120,
-      gap: 2,
-      zIndex: 70,
-    },
-    attachItem: {
-      padding: "6px 12px",
-      fontSize: 13,
-      color: "#111827",
-      textAlign: "left",
-      border: 0,
-      background: "transparent",
-      cursor: "pointer",
-    },
-    // LinkU 제안 확인 오버레이
-    confirmOverlay: {
-      position: "absolute",
-      inset: 0,
-      background: "rgba(15,23,42,0.18)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 80,
-    },
-    confirmBox: {
-      background: "#eef4ff",
-      borderRadius: 16,
-      border: "1px solid #dbeafe",
-      padding: "16px 20px",
-      minWidth: 260,
-      maxWidth: 320,
-      boxShadow: "0 15px 30px rgba(15,23,42,0.25)",
-    },
-    confirmText: {
-      fontSize: 13,
-      color: "#0f172a",
-      textAlign: "center",
-      marginBottom: 12,
-    },
-    confirmBtnRow: {
-      display: "flex",
-      gap: 8,
-      marginTop: 4,
-    },
-    confirmYes: {
-      flex: 1,
-      borderRadius: 999,
-      border: 0,
-      padding: "8px 0",
-      background: "#2563eb",
-      color: "#ffffff",
-      fontWeight: 700,
-      cursor: "pointer",
-      fontSize: 13,
-    },
-    confirmNo: {
-      flex: 1,
-      borderRadius: 999,
-      border: 0,
-      padding: "8px 0",
-      background: "#ffffff",
-      color: "#4b5563",
-      fontWeight: 600,
-      cursor: "pointer",
-      fontSize: 13,
-      borderColor: "#e5e7eb",
-      boxShadow: "0 0 0 1px #e5e7eb",
-    },
+  /* ===== 상태/헬퍼 ===== */
+  function statusLabel() {
+    if (wsStatus === "connected") return "";
+    if (wsStatus === "connecting") return "연결 중…";
+    if (wsStatus === "error") return "연결 오류";
+    return "대기";
+  }
+  function statusColor() {
+    if (wsStatus === "connected") return "#22c55e";
+    if (wsStatus === "connecting") return "#f59e0b";
+    if (wsStatus === "error") return "#ef4444";
+    return "#9ca3af";
+  }
+
+  /* ===== 시스템/공지 타입 판별 헬퍼 ===== */
+  function isSystemKind(kind) {
+    return (
+      kind === "LINKU_PROPOSE" ||
+      kind === "LINKU_ACCEPT" ||
+      kind === "LINKU_REJECT" ||
+      kind === "REVIEW_NOTICE"
+    );
+  }
+
+  // 상단 LinkU 버튼 텍스트 & 비활성 여부
+  const linkuButtonDisabled =
+    myProposalPending && linkuState.status === "PENDING";
+  const linkuButtonLabel = linkuButtonDisabled ? "제안 완료" : "LinkU";
+  const linkuButtonClass = linkuButtonDisabled
+    ? "chatroom-linku-btn disabled"
+    : "chatroom-linku-btn";
+
+  // 🔹 후기 버튼 존재 여부
+  const hasReviewButton = linkuState.linked && linkuState.canReview;
+
+  // 🔹 첨부 패널 위치: 후기 버튼 유무에 따라 bottom 조정
+  const attachPanelStyle = {
+    bottom: hasReviewButton ? 120 : 72,
   };
 
   /* ===== 메시지 전송 ===== */
@@ -980,83 +623,32 @@ export default function ChatRoom() {
     }
   }
 
-  function statusLabel() {
-    if (wsStatus === "connected") return "";
-    if (wsStatus === "connecting") return "연결 중…";
-    if (wsStatus === "error") return "연결 오류";
-    return "대기";
-  }
-  function statusColor() {
-    if (wsStatus === "connected") return "#22c55e";
-    if (wsStatus === "connecting") return "#f59e0b";
-    if (wsStatus === "error") return "#ef4444";
-    return "#9ca3af";
-  }
-
-  /* ===== 시스템/공지 타입 판별 헬퍼 ===== */
-  function isSystemKind(kind) {
-    return (
-      kind === "LINKU_PROPOSE" ||
-      kind === "LINKU_ACCEPT" ||
-      kind === "LINKU_REJECT" ||
-      kind === "REVIEW_NOTICE"
-    );
-  }
-
-  // 상단 LinkU 버튼 텍스트 & 비활성 여부
-  const linkuButtonDisabled =
-    myProposalPending && linkuState.status === "PENDING";
-  const linkuButtonLabel = linkuButtonDisabled ? "제안 완료" : "LinkU";
-
-  // 🔹 후기 버튼 존재 여부
-  const hasReviewButton = linkuState.linked && linkuState.canReview;
-
-  // 🔹 첨부 패널 위치: 후기 버튼 유무에 따라 bottom 조정
-  const attachPanelStyle = {
-    ...styles.attachPanel,
-    bottom: hasReviewButton ? 120 : 72,
-  };
-
   return (
-    <div style={styles.stage}>
-      {/* 스크롤바 숨김 */}
-      <style>
-        {`
-          .chat-list::-webkit-scrollbar {
-            display: none;
-          }
-        `}
-      </style>
-
-      <div style={styles.card}>
+    <div className="chatroom-stage">
+      <div className="chatroom-card">
         {/* 상단바 */}
-        <div style={styles.top}>
+        <div className="chatroom-top">
           <button
+            className="chatroom-back-btn"
             onClick={() => nav("/chat")}
-            style={{
-              border: 0,
-              background: "transparent",
-              fontSize: 20,
-              cursor: "pointer",
-            }}
           >
             ←
           </button>
 
           {otherUser ? (
             <div
-              style={styles.topTitleBox}
+              className="chatroom-top-titlebox"
               role="button"
               tabIndex={0}
               onClick={goOtherProfile}
               onKeyDown={(e) => e.key === "Enter" && goOtherProfile(e)}
             >
-              <div style={styles.topAvatar}>
+              <div className="chatroom-top-avatar">
                 {otherAvatarSrc ? (
                   <img
                     src={otherAvatarSrc}
                     alt="상대 프로필"
-                    style={styles.topAvatarImg}
+                    className="chatroom-top-avatar-img"
                     referrerPolicy="no-referrer"
                     onError={(e) => {
                       e.currentTarget.style.display = "none";
@@ -1066,22 +658,22 @@ export default function ChatRoom() {
                   "👤"
                 )}
               </div>
-              <div style={styles.topNameBox}>
-                <div style={styles.topName}>{otherDisplayName}</div>
+              <div className="chatroom-top-namebox">
+                <div className="chatroom-top-name">{otherDisplayName}</div>
                 {otherUser?.major && (
-                  <div style={styles.topSub}>{otherUser.major}</div>
+                  <div className="chatroom-top-sub">{otherUser.major}</div>
                 )}
               </div>
             </div>
           ) : (
-            <div style={{ fontWeight: 800 }}>채팅방</div>
+            <div className="chatroom-top-fallback">채팅방</div>
           )}
 
-          <div style={styles.topRightBox}>
+          <div className="chatroom-top-right">
             {/* 상단 LinkU 버튼 */}
             <button
               type="button"
-              style={styles.linkuTopBtn(linkuButtonDisabled)}
+              className={linkuButtonClass}
               disabled={linkuButtonDisabled}
               onClick={() => {
                 if (!linkuButtonDisabled) setConfirmOpen(true);
@@ -1090,9 +682,9 @@ export default function ChatRoom() {
               {linkuButtonLabel}
             </button>
 
-            <span style={styles.statusText}>{statusLabel()}</span>
+            <span className="chatroom-status-text">{statusLabel()}</span>
             <button
-              style={styles.menuButton}
+              className="chatroom-menu-btn"
               onClick={() => setMenuOpen((v) => !v)}
             >
               ☰
@@ -1100,14 +692,17 @@ export default function ChatRoom() {
           </div>
 
           {menuOpen && (
-            <div style={styles.menuWrap}>
-              <div style={styles.menuPanel}>
-                <div style={styles.menuStatusRow}>
-                  <span style={styles.menuDot(statusColor())} />
+            <div className="chatroom-menu-wrap">
+              <div className="chatroom-menu-panel">
+                <div className="chatroom-menu-status">
+                  <span
+                    className="chatroom-menu-dot"
+                    style={{ backgroundColor: statusColor() }}
+                  />
                   <span>{statusLabel()}</span>
                 </div>
                 <button
-                  style={styles.menuItemDanger}
+                  className="chatroom-menu-leave"
                   onClick={handleLeaveRoom}
                   disabled={leaving}
                 >
@@ -1119,17 +714,9 @@ export default function ChatRoom() {
         </div>
 
         {/* 메시지 영역 */}
-        <div ref={listRef} style={styles.list} className="chat-list">
+        <div ref={listRef} className="chatroom-list">
           {messages.length === 0 && (
-            <div
-              style={{
-                color: "#94a3b8",
-                textAlign: "center",
-                marginTop: 8,
-              }}
-            >
-              대화를 시작해보세요.
-            </div>
+            <div className="chatroom-empty">대화를 시작해보세요.</div>
           )}
 
           {messages.map((m, idx) => {
@@ -1238,58 +825,32 @@ export default function ChatRoom() {
               return (
                 <React.Fragment key={`linku-propose-${m.id}-${idx}`}>
                   {showDateDivider && (
-                    <div style={styles.dateDivider}>
-                      <span style={styles.dateLabel}>
+                    <div className="chatroom-date-divider">
+                      <span className="chatroom-date-label">
                         {formatDateLabel(m.createdAt)}
                       </span>
                     </div>
                   )}
 
-                  <div style={{ display: "flex", justifyContent: "center" }}>
-                    <div style={styles.linkuCard}>
-                      <div
-                        style={{
-                          fontWeight: 700,
-                          marginBottom: 4,
-                          color: "#1d4ed8",
-                        }}
-                      >
-                        LinkU 제안
-                      </div>
-                      <div style={{ marginBottom: 10 }}>
+                  <div className="chatroom-linku-propose-wrap">
+                    <div className="chatroom-linku-card">
+                      <div className="chatroom-linku-title">LinkU 제안</div>
+                      <div className="chatroom-linku-body">
                         {m.content || "함께 LinkU를 제안했습니다."}
                       </div>
 
                       {isTarget && status === "PENDING" && (
-                        <div style={{ display: "flex", gap: 8 }}>
+                        <div className="chatroom-linku-btnrow">
                           <button
                             type="button"
-                            style={{
-                              flex: 1,
-                              borderRadius: 999,
-                              border: 0,
-                              padding: "8px 0",
-                              background: "#2563eb",
-                              color: "#fff",
-                              fontWeight: 700,
-                              cursor: "pointer",
-                            }}
+                            className="chatroom-linku-accept"
                             onClick={() => handleAcceptLinku(linkuId)}
                           >
                             수락
                           </button>
                           <button
                             type="button"
-                            style={{
-                              flex: 1,
-                              borderRadius: 999,
-                              border: 0,
-                              padding: "8px 0",
-                              background: "#e5e7eb",
-                              color: "#374151",
-                              fontWeight: 600,
-                              cursor: "pointer",
-                            }}
+                            className="chatroom-linku-reject"
                             onClick={() => handleRejectLinku(linkuId)}
                           >
                             거절
@@ -1298,18 +859,18 @@ export default function ChatRoom() {
                       )}
 
                       {!isTarget && status === "PENDING" && (
-                        <div style={{ fontSize: 12, color: "#6b7280" }}>
+                        <div className="chatroom-linku-wait">
                           상대의 응답을 기다리는 중입니다…
                         </div>
                       )}
 
                       {status === "ACCEPTED" && (
-                        <div style={{ fontSize: 12, color: "#16a34a" }}>
+                        <div className="chatroom-linku-status accepted">
                           LinkU가 수락되었습니다.
                         </div>
                       )}
                       {status === "REJECTED" && (
-                        <div style={{ fontSize: 12, color: "#b91c1c" }}>
+                        <div className="chatroom-linku-status rejected">
                           LinkU가 거절되었습니다.
                         </div>
                       )}
@@ -1330,15 +891,15 @@ export default function ChatRoom() {
               return (
                 <React.Fragment key={`linku-notice-${m.id}-${idx}`}>
                   {showDateDivider && (
-                    <div style={styles.dateDivider}>
-                      <span style={styles.dateLabel}>
+                    <div className="chatroom-date-divider">
+                      <span className="chatroom-date-label">
                         {formatDateLabel(m.createdAt)}
                       </span>
                     </div>
                   )}
 
-                  <div style={styles.systemNoticeWrap}>
-                    <div style={styles.systemNoticeBubble}>{noticeText}</div>
+                  <div className="chatroom-system-wrap">
+                    <div className="chatroom-system-bubble">{noticeText}</div>
                   </div>
                 </React.Fragment>
               );
@@ -1354,37 +915,20 @@ export default function ChatRoom() {
               return (
                 <React.Fragment key={`review-notice-${m.id}-${idx}`}>
                   {showDateDivider && (
-                    <div style={styles.dateDivider}>
-                      <span style={styles.dateLabel}>
+                    <div className="chatroom-date-divider">
+                      <span className="chatroom-date-label">
                         {formatDateLabel(m.createdAt)}
                       </span>
                     </div>
                   )}
 
-                  <div style={styles.systemNoticeWrap}>
-                    <div
-                      style={{
-                        ...styles.systemNoticeBubble,
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: 8,
-                      }}
-                    >
+                  <div className="chatroom-system-wrap">
+                    <div className="chatroom-system-bubble review">
                       <span>{noticeText}</span>
                       {isReceiver && (
                         <button
                           type="button"
-                          style={{
-                            margin: "0 auto",
-                            padding: "6px 14px",
-                            borderRadius: 999,
-                            border: "0",
-                            fontSize: 12,
-                            fontWeight: 600,
-                            background: "#2563eb",
-                            color: "#fff",
-                            cursor: "pointer",
-                          }}
+                          className="chatroom-system-review-btn"
                           onClick={() =>
                             nav("/my", {
                               state: {
@@ -1407,8 +951,8 @@ export default function ChatRoom() {
             return (
               <React.Fragment key={`${m.id}-${m.createdAt || idx}`}>
                 {showDateDivider && (
-                  <div style={styles.dateDivider}>
-                    <span style={styles.dateLabel}>
+                  <div className="chatroom-date-divider">
+                    <span className="chatroom-date-label">
                       {formatDateLabel(m.createdAt)}
                     </span>
                   </div>
@@ -1416,30 +960,21 @@ export default function ChatRoom() {
 
                 {mine ? (
                   <div
-                    style={{
-                      ...styles.bubbleRow,
-                      justifyContent: "flex-end",
-                    }}
+                    className="chatroom-bubble-row"
+                    style={{ justifyContent: "flex-end" }}
                   >
-                    <div
-                      style={{
-                        ...styles.bubble,
-                        ...styles.meBubble,
-                      }}
-                    >
+                    <div className="chatroom-bubble chatroom-bubble-me">
                       {m.content}
                     </div>
                   </div>
                 ) : (
                   <div
-                    style={{
-                      ...styles.bubbleRow,
-                      justifyContent: "flex-start",
-                    }}
+                    className="chatroom-bubble-row"
+                    style={{ justifyContent: "flex-start" }}
                   >
                     {showOtherAvatar ? (
                       <div
-                        style={styles.otherAvatar}
+                        className="chatroom-other-avatar"
                         role="button"
                         tabIndex={0}
                         onClick={goOtherProfile}
@@ -1449,7 +984,7 @@ export default function ChatRoom() {
                           <img
                             src={otherAvatarSrc}
                             alt="상대 프로필"
-                            style={styles.otherAvatarImg}
+                            className="chatroom-other-avatar-img"
                             referrerPolicy="no-referrer"
                             onError={(e) => {
                               e.currentTarget.style.display = "none";
@@ -1460,22 +995,21 @@ export default function ChatRoom() {
                         )}
                       </div>
                     ) : (
-                      <div style={styles.otherAvatarSpacer} />
+                      <div className="chatroom-other-avatar-spacer" />
                     )}
 
-                    <div
-                      style={{
-                        ...styles.bubble,
-                        ...styles.otherBubble,
-                      }}
-                    >
+                    <div className="chatroom-bubble chatroom-bubble-other">
                       {m.content}
                     </div>
                   </div>
                 )}
 
                 {showTime && (
-                  <div style={mine ? styles.timeRowMe : styles.timeRowOther}>
+                  <div
+                    className={
+                      mine ? "chatroom-time-me" : "chatroom-time-other"
+                    }
+                  >
                     {formatTimeLabel(m.createdAt)}
                   </div>
                 )}
@@ -1484,26 +1018,26 @@ export default function ChatRoom() {
           })}
         </div>
 
-        {/* 🔹 플러스 눌렀을 때 첨부 메뉴: 후기 버튼 유무에 따라 bottom 달라짐 */}
+        {/* 🔹 플러스 눌렀을 때 첨부 메뉴 */}
         {attachOpen && (
-          <div style={attachPanelStyle}>
+          <div className="chatroom-attach-panel" style={attachPanelStyle}>
             <button
               type="button"
-              style={styles.attachItem}
+              className="chatroom-attach-item"
               onClick={() => alert("앨범에서 사진 첨부는 추후 구현 예정입니다.")}
             >
               앨범
             </button>
             <button
               type="button"
-              style={styles.attachItem}
+              className="chatroom-attach-item"
               onClick={() => alert("카메라 첨부는 추후 구현 예정입니다.")}
             >
               카메라
             </button>
             <button
               type="button"
-              style={styles.attachItem}
+              className="chatroom-attach-item"
               onClick={() => alert("파일 첨부는 추후 구현 예정입니다.")}
             >
               파일
@@ -1512,12 +1046,12 @@ export default function ChatRoom() {
         )}
 
         {/* 하단 영역 */}
-        <div style={styles.bottomWrap}>
+        <div className="chatroom-bottom">
           {/* 입력바 */}
-          <div style={styles.bottomRow}>
+          <div className="chatroom-bottom-row">
             <button
               type="button"
-              style={styles.plusBtn}
+              className="chatroom-plus-btn"
               onClick={() => setAttachOpen((v) => !v)}
               disabled={wsStatus !== "connected"}
             >
@@ -1525,7 +1059,7 @@ export default function ChatRoom() {
             </button>
 
             <input
-              style={styles.input}
+              className="chatroom-input"
               value={input}
               placeholder="메시지를 입력하세요"
               onChange={(e) => setInput(e.target.value)}
@@ -1533,7 +1067,7 @@ export default function ChatRoom() {
               disabled={wsStatus !== "connected"}
             />
             <button
-              style={styles.sendBtn}
+              className="chatroom-send-btn"
               onClick={send}
               disabled={wsStatus !== "connected"}
             >
@@ -1545,7 +1079,7 @@ export default function ChatRoom() {
           {hasReviewButton && (
             <button
               type="button"
-              style={styles.actionCard}
+              className="chatroom-action-card"
               onClick={() =>
                 nav(`/linku/review/${roomId}`, {
                   state: {
@@ -1563,22 +1097,22 @@ export default function ChatRoom() {
 
         {/* LinkU 제안 확인 박스 */}
         {confirmOpen && (
-          <div style={styles.confirmOverlay}>
-            <div style={styles.confirmBox}>
-              <div style={styles.confirmText}>
+          <div className="chatroom-confirm-overlay">
+            <div className="chatroom-confirm-box">
+              <div className="chatroom-confirm-text">
                 {otherDisplayName}님에게 LinkU 제안을 하시겠습니까?
               </div>
-              <div style={styles.confirmBtnRow}>
+              <div className="chatroom-confirm-btn-row">
                 <button
                   type="button"
-                  style={styles.confirmYes}
+                  className="chatroom-confirm-yes"
                   onClick={handleLinkuClick}
                 >
                   예
                 </button>
                 <button
                   type="button"
-                  style={styles.confirmNo}
+                  className="chatroom-confirm-no"
                   onClick={() => setConfirmOpen(false)}
                 >
                   아니요

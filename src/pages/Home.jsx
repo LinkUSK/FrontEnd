@@ -1,6 +1,8 @@
 // src/pages/Home.jsx
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import BottomNav from "../components/BottomNav";
+import "../styles/home.css";
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -37,7 +39,6 @@ const POPULAR_TAGS = [
       display: none;
     }
 
-    /* ✅ 가로 스크롤 컨테이너의 스크롤바 숨김 */
     .horizontal-scroll {
       -ms-overflow-style: none;
       scrollbar-width: none;
@@ -161,275 +162,6 @@ export default function Home() {
       : `${API_BASE}${url.startsWith("/") ? url : `/${url}`}`;
   }
 
-  /* ================== 스타일 ================== */
-
-  const styles = {
-    frame: {
-      background: "#eef2f7",
-      minHeight: "100vh",
-      display: "flex",
-      justifyContent: "center",
-    },
-    wrap: {
-      maxWidth: 420,
-      width: "100%",
-      height: "100vh",
-      maxHeight: 720,
-      background: "#f8fafc",
-      boxSizing: "border-box",
-      display: "flex",
-      flexDirection: "column",
-      paddingBottom: 6,
-    },
-    inner: {
-      flex: 1,
-      overflowY: "auto",
-      padding: "0 16px 12px",
-      boxSizing: "border-box",
-    },
-    top: {
-      fontWeight: 800,
-      fontSize: 22,
-      padding: "18px 2px 10px",
-      textAlign: "center",
-    },
-    search: {
-      display: "flex",
-      alignItems: "center",
-      background: "#fff",
-      borderRadius: 16,
-      border: "1px solid #e5e7eb",
-      padding: "10px 14px",
-      width: "100%",
-      boxSizing: "border-box",
-    },
-    input: {
-      border: "none",
-      outline: "none",
-      flex: 1,
-      fontSize: 14,
-      color: "#334155",
-      background: "transparent",
-    },
-    list: {
-      display: "flex",
-      flexDirection: "column",
-      gap: 10,
-      marginTop: 10,
-      width: "100%",
-      boxSizing: "border-box",
-    },
-    sectionTitle: {
-      marginTop: 14,
-      marginBottom: 6,
-      fontSize: 13,
-      fontWeight: 600,
-      color: "#64748b",
-    },
-    bottomWrap: {
-      position: "fixed",
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: "#fff",
-      borderTop: "1px solid #e5e7eb",
-    },
-    bottomInner: { maxWidth: 420, margin: "0 auto", display: "flex" },
-    tab: (active) => ({
-      flex: 1,
-      textAlign: "center",
-      padding: "8px 0",
-      borderTop: active ? "2px solid #4f46e5" : "2px solid transparent",
-      color: active ? "#4f46e5" : "#94a3b8",
-      fontSize: 12,
-      fontWeight: active ? 700 : 400,
-      cursor: "pointer",
-    }),
-    card: {
-      width: "100%",
-      boxSizing: "border-box",
-      background: "#fff",
-      border: "1px solid #e5e7eb",
-      borderRadius: 16,
-      padding: 14,
-      cursor: "pointer",
-    },
-    topRow: { display: "flex", alignItems: "center", gap: 10 },
-    avatar: {
-      width: 44,
-      height: 44,
-      borderRadius: "50%",
-      background: "#e5e7eb",
-      overflow: "hidden",
-      flex: "0 0 44px",
-      cursor: "pointer",
-    },
-    avatarImg: {
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-      display: "block",
-    },
-    nameRow: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      gap: 8,
-    },
-    nameLeft: {
-      display: "flex",
-      alignItems: "center",
-      gap: 6,
-      fontSize: 13,
-      color: "#0f172a",
-      minWidth: 0,
-      cursor: "pointer",
-    },
-    majorText: {
-      fontSize: 12,
-      color: "#9ca3af",
-      whiteSpace: "nowrap",
-    },
-    title: { marginTop: 6, fontSize: 15, fontWeight: 700, color: "#0f172a" },
-    chipRow: {
-      display: "flex",
-      gap: 8,
-      flexWrap: "wrap",
-      marginTop: 6,
-    },
-    chip: {
-      fontSize: 11,
-      padding: "6px 10px",
-      borderRadius: 999,
-      background: "#fff",
-      border: "1px solid #e5e7eb",
-      color: "#4b5563",
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 4,
-      cursor: "pointer",
-      whiteSpace: "nowrap",
-    },
-    ratingRow: {
-      display: "flex",
-      alignItems: "center",
-      gap: 4,
-      fontSize: 12,
-      color: "#4b5563",
-      whiteSpace: "nowrap",
-    },
-    ratingStar: { fontSize: 16 },
-    aiButton: {
-      width: "100%",
-      marginTop: 10,
-      borderRadius: 999,
-      border: "1px solid rgba(129,140,248,0.6)",
-      padding: "9px 0",
-      fontSize: 13,
-      fontWeight: 700,
-      cursor: "pointer",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 8,
-      background: "#ffffff",
-      color: "#1e293b",
-      boxShadow: "0 6px 14px rgba(15,23,42,0.04)",
-    },
-    aiIcon: {
-      width: 24,
-      height: 24,
-      borderRadius: "999px",
-      background:
-        "radial-gradient(circle at 30% 30%, #4f46e5, #0ea5e9, #22c55e)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "#fff",
-      fontSize: 13,
-      fontWeight: 800,
-      boxShadow: "0 0 0 2px rgba(191,219,254,0.9)",
-    },
-    aiButtonSub: {
-      fontSize: 11,
-      fontWeight: 500,
-      color: "#64748b",
-    },
-    // 🔹 가로 스크롤 영역 공통
-    //    → 스크롤바는 아래쪽으로 밀어내서 안 보이게 처리
-    horizontalScroll: {
-      display: "flex",
-      gap: 8,
-      overflowX: "auto",      // 가로 스크롤 가능
-      overflowY: "hidden",
-      flexWrap: "nowrap",
-      paddingBottom: 12,      // 컨테이너 안쪽에 여백
-      marginBottom: -8,       // 스크롤바가 이 여백 아래로 내려가서 안 보이게 됨
-      WebkitOverflowScrolling: "touch",
-    },
-    // 🔵 AI 추천 검색어용 칩
-    blueChip: {
-      fontSize: 11,
-      padding: "7px 12px",
-      borderRadius: 999,
-      background: "#ffffff",
-      border: "1px solid #bfdbfe",
-      color: "#1d4ed8",
-      display: "inline-flex",
-      alignItems: "center",
-      cursor: "pointer",
-      whiteSpace: "nowrap",
-      flex: "0 0 auto",
-      boxShadow: "0 2px 6px rgba(148,163,184,0.18)",
-    },
-    // ⭐ 인기 태그용: 무난한 회색 칩
-    popularChip: {
-      fontSize: 11,
-      padding: "6px 10px",
-      borderRadius: 999,
-      background: "#f9fafb",
-      border: "1px solid #e5e7eb",
-      color: "#4b5563",
-      display: "inline-flex",
-      alignItems: "center",
-      cursor: "pointer",
-      whiteSpace: "nowrap",
-      flex: "0 0 auto",
-    },
-  };
-
-  /* ================== 하단 탭 ================== */
-
-  function BottomBar() {
-    const is = (p) =>
-      p === "/home" ? loc.pathname === "/home" : loc.pathname.startsWith(p);
-    return (
-      <div style={styles.bottomWrap}>
-        <div style={styles.bottomInner}>
-          <div style={styles.tab(is("/home"))} onClick={() => nav("/home")}>
-            <div style={{ fontSize: 20 }}>🏠</div>
-            <div>홈</div>
-          </div>
-          <div
-            style={styles.tab(is("/create"))}
-            onClick={() => nav("/create")}
-          >
-            <div style={{ fontSize: 20 }}>✏️</div>
-            <div>재능 등록</div>
-          </div>
-          <div style={styles.tab(is("/chat"))} onClick={() => nav("/chat")}>
-            <div style={{ fontSize: 20 }}>💬</div>
-            <div>채팅</div>
-          </div>
-          <div style={styles.tab(is("/my"))} onClick={() => nav("/my")}>
-            <div style={{ fontSize: 20 }}>👤</div>
-            <div>마이페이지</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   /* ================== 공통 검색 실행 함수 ================== */
 
   const runSearchWithKeyword = (keyword, { showInInput = true } = {}) => {
@@ -545,42 +277,44 @@ export default function Home() {
         onKeyDown={(e) => {
           if (e.key === "Enter") nav(`/talent/${item.id}`);
         }}
-        style={styles.card}
+        className="home-card"
       >
-        <div style={styles.topRow}>
+        <div className="home-cardTopRow">
           <div
-            style={styles.avatar}
+            className="home-avatar"
             role="button"
             tabIndex={0}
             onClick={goProfile}
             onKeyDown={(e) => e.key === "Enter" && goProfile(e)}
           >
             {avatarSrc ? (
-              <img src={avatarSrc} alt="avatar" style={styles.avatarImg} />
+              <img src={avatarSrc} alt="avatar" className="home-avatarImg" />
             ) : (
               "👤"
             )}
           </div>
 
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={styles.nameRow}>
+          <div className="home-nameCol">
+            <div className="home-nameRow">
               <div
-                style={styles.nameLeft}
+                className="home-nameLeft"
                 role="button"
                 tabIndex={0}
                 onClick={goProfile}
                 onKeyDown={(e) => e.key === "Enter" && goProfile(e)}
               >
-                <strong>{item.authorName ?? item.authorUserId ?? "익명"}</strong>
-                <span style={styles.majorText}>
+                <strong>
+                  {item.authorName ?? item.authorUserId ?? "익명"}
+                </strong>
+                <span className="home-majorText">
                   {item.authorMajor || "전공 미입력"}
                 </span>
               </div>
 
               {rating != null && (
-                <div style={styles.ratingRow}>
-                  <span style={styles.ratingStar}>★</span>
-                  <span style={{ fontWeight: 700 }}>
+                <div className="home-ratingRow">
+                  <span className="home-ratingStar">★</span>
+                  <span className="home-ratingValue">
                     {rating.toFixed(1)}
                   </span>
                 </div>
@@ -589,9 +323,9 @@ export default function Home() {
           </div>
         </div>
 
-        <div style={styles.title}>{item.title}</div>
+        <div className="home-cardTitle">{item.title}</div>
 
-        <div style={styles.chipRow}>
+        <div className="home-chipRow">
           {tagNames.map((t, idx) => (
             <span
               key={`${item.id}-${t}-${idx}`}
@@ -607,7 +341,7 @@ export default function Home() {
                   setTagFilterId(tagIds[idx]);
                 }
               }}
-              style={styles.chip}
+              className="home-chip"
               title="이 태그로 필터링"
             >
               {t?.startsWith("#") ? t : `#${t}`}
@@ -627,64 +361,49 @@ export default function Home() {
   /* ================== 렌더링 ================== */
 
   return (
-    <div style={styles.frame}>
-      <div style={styles.wrap}>
-        <div className="inner-scroll" style={styles.inner}>
-          <div style={styles.top}>CampusLink</div>
+    <div className="home-frame">
+      <div className="home-wrap">
+        <div className="inner-scroll home-inner">
+          <div className="home-top">CampusLink</div>
 
           {/* 🔍 기본 검색창 */}
-          <div style={styles.search}>
-            <span style={{ marginRight: 8 }}>🔍</span>
+          <div className="home-search">
+            <span className="home-searchIcon">🔍</span>
             <input
-              style={styles.input}
+              className="home-searchInput"
               placeholder="재능, 전공, 키워드, #태그 검색"
               value={qDisplay}
               onChange={(e) => setQDisplay(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && onSearch()}
             />
-            <button
-              onClick={onSearch}
-              style={{
-                border: 0,
-                borderRadius: 12,
-                padding: "8px 10px",
-                background: "#4f46e5",
-                color: "#fff",
-                fontWeight: 700,
-                cursor: "pointer",
-                fontSize: 12,
-              }}
-            >
+            <button onClick={onSearch} className="home-searchBtn">
               검색
             </button>
           </div>
 
           {/* ✨ AI 추천 검색 버튼 */}
-          <button style={styles.aiButton} onClick={handleAiClick}>
-            <div style={styles.aiIcon}>AI</div>
+          <button className="home-aiButton" onClick={handleAiClick}>
+            <div className="home-aiIcon">AI</div>
             <div>
               <div>AI 추천 검색</div>
-              <div style={styles.aiButtonSub}>
+              <div className="home-aiButtonSub">
                 내 전공과 키워드로 팀원을 추천해줘요
               </div>
             </div>
             {aiLoading && (
-              <span style={{ fontSize: 11, marginLeft: 6 }}>불러오는 중...</span>
+              <span className="home-aiLoadingText">불러오는 중...</span>
             )}
           </button>
 
-          {/* ✨ AI 추천 검색어 (tags만, 가로 스크롤 / 스크롤바 숨김) */}
+          {/* ✨ AI 추천 검색어 */}
           {aiOpen && aiTags.length > 0 && (
             <div>
-              <div style={styles.sectionTitle}>AI 추천 검색어</div>
-              <div
-                className="horizontal-scroll"
-                style={styles.horizontalScroll}
-              >
+              <div className="home-sectionTitle">AI 추천 검색어</div>
+              <div className="horizontal-scroll home-horizontalScroll">
                 {aiTags.map((name, idx) => (
                   <span
                     key={`ai-tag-${idx}`}
-                    style={styles.blueChip}
+                    className="home-blueChip"
                     onClick={(e) => {
                       e.stopPropagation();
                       runSearchWithKeyword(name, { showInInput: true });
@@ -697,18 +416,15 @@ export default function Home() {
             </div>
           )}
 
-          {/* 🔥 인기 태그 (가로 스크롤 / 무난한 칩) */}
+          {/* 🔥 인기 태그 */}
           {POPULAR_TAGS.length > 0 && (
             <div>
-              <div style={styles.sectionTitle}>인기 태그</div>
-              <div
-                className="horizontal-scroll"
-                style={styles.horizontalScroll}
-              >
+              <div className="home-sectionTitle">인기 태그</div>
+              <div className="horizontal-scroll home-horizontalScroll">
                 {POPULAR_TAGS.map((name) => (
                   <span
                     key={name}
-                    style={styles.popularChip}
+                    className="home-popularChip"
                     onClick={(e) => {
                       e.stopPropagation();
                       runSearchWithKeyword(`#${name}`, { showInInput: true });
@@ -723,18 +439,10 @@ export default function Home() {
 
           {/* 기존 tagId 필터 해제 버튼 */}
           {tagFilterId && (
-            <div style={{ marginTop: 10 }}>
+            <div className="home-tagClearWrap">
               <button
                 onClick={() => setTagFilterId(null)}
-                style={{
-                  fontSize: 12,
-                  padding: "6px 10px",
-                  border: "1px solid #4f46e5",
-                  borderRadius: 999,
-                  background: "#eef2ff",
-                  color: "#3730a3",
-                  cursor: "pointer",
-                }}
+                className="home-tagClearBtn"
               >
                 태그 필터 해제 ✕
               </button>
@@ -742,11 +450,11 @@ export default function Home() {
           )}
 
           {/* 게시글 리스트 + 무한스크롤 */}
-          <div style={styles.list}>
+          <div className="home-list">
             {posts.map((p, i) => (
               <div
                 key={p.id}
-                style={{ width: "100%", boxSizing: "border-box" }}
+                className="home-postWrapper"
                 ref={
                   i === posts.length - 1
                     ? (node) => {
@@ -773,20 +481,11 @@ export default function Home() {
           </div>
 
           {loading && (
-            <div
-              style={{
-                textAlign: "center",
-                color: "#94a3b8",
-                padding: 20,
-                fontSize: 13,
-              }}
-            >
-              불러오는 중...
-            </div>
+            <div className="home-loading">불러오는 중...</div>
           )}
         </div>
 
-        <BottomBar />
+        <BottomNav active="home" />
       </div>
     </div>
   );

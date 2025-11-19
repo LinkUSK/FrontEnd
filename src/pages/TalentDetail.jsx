@@ -1,6 +1,7 @@
 // src/pages/TalentDetail.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import "../styles/talent/talentDetail.css";
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -59,7 +60,7 @@ function StarIcon({ filled }) {
     <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
       <path
         d="M12 2.75l2.75 5.57 6.15.9-4.45 4.34 1.05 6.13L12 16.9l-5.5 2.89 1.05-6.13-4.45-4.34 6.15-.9L12 2.75z"
-        fill={filled ? color : "white"} // 채워진/비채워진
+        fill={filled ? color : "white"}
         stroke={color}
         strokeWidth="1.8"
         strokeLinejoin="round"
@@ -171,7 +172,7 @@ export default function TalentDetail() {
     })();
   }, [data?.authorUserId]);
 
-  // 🔹 포트폴리오 이미지 배열 (신규: portfolioImageUrls / 기존: portfolioImageUrl)
+  // 🔹 포트폴리오 이미지 배열
   const portfolioUrls = useMemo(() => {
     if (!data) return [];
     if (Array.isArray(data.portfolioImageUrls) && data.portfolioImageUrls.length) {
@@ -181,7 +182,7 @@ export default function TalentDetail() {
     return [];
   }, [data]);
 
-  // 이미지 개수가 바뀔 때 인덱스 안전하게 조정
+  // 이미지 개수가 바뀔 때 인덱스 조정
   useEffect(() => {
     if (imgIndex >= portfolioUrls.length) {
       setImgIndex(0);
@@ -205,7 +206,7 @@ export default function TalentDetail() {
     );
   }
 
-  // ESC로 라이트박스 닫기
+  // ESC / 방향키로 라이트박스 제어
   useEffect(() => {
     if (!lightboxOpen) return;
     function onKey(e) {
@@ -266,13 +267,12 @@ export default function TalentDetail() {
       return alert("게시글 작성자 정보를 찾을 수 없습니다.");
     }
 
-    // talentPostId: 현재 상세 페이지의 재능글 id
     const talentPostId = Number(id);
 
     try {
       setCreating(true);
 
-      // 1️⃣ 내 채팅방 목록에서 이 작성자와 이미 만들어진 방이 있는지 찾기
+      // 1️⃣ 기존 방 있는지 확인
       let existingRoom = null;
       try {
         const list = await apiGet("/api/chat/my-rooms");
@@ -287,15 +287,14 @@ export default function TalentDetail() {
           );
         });
       } catch (e) {
-        console.warn("채팅 목록 조회 실패 (무시하고 새 방 생성 시도 가능)", e);
+        console.warn("채팅 목록 조회 실패", e);
       }
 
-      // ✅ 이미 방이 있으면 그 방으로 이동 (이번 LinkU는 이 게시글 기준이 되도록 postId state에 실어줌)
       if (existingRoom && existingRoom.roomId) {
         nav(`/chat/${existingRoom.roomId}`, {
           state: {
             draft: text,
-            talentPostId, // 🔹 이번 대화의 LinkU는 이 게시글 기준
+            talentPostId,
           },
         });
         return;
@@ -308,7 +307,6 @@ export default function TalentDetail() {
       });
       if (!r?.roomId) throw new Error("채팅방 생성 실패");
 
-      // receiverId 힌트 계산
       let hintReceiverId = null;
       const myNumericId = me?.id ?? me?.userPk ?? null;
       if (myNumericId != null && r.ownerId != null && r.otherUserId != null) {
@@ -319,7 +317,7 @@ export default function TalentDetail() {
         state: {
           draft: text,
           hintReceiverId,
-          talentPostId, // 🔹 새로 만든 방도 이 게시글 기준으로 LinkU 기록
+          talentPostId,
         },
       });
     } catch (e) {
@@ -329,7 +327,7 @@ export default function TalentDetail() {
     }
   }
 
-  // ⭐ 내 글일 때: 삭제하기 버튼만
+  // ⭐ 내 글일 때: 삭제
   async function handleDelete() {
     if (!data) return;
     if (!window.confirm("정말 이 게시글을 삭제하시겠습니까?")) return;
@@ -369,314 +367,6 @@ export default function TalentDetail() {
       ? Number(ratingSummary.reviewCount)
       : 0;
 
-  /* ===== 스타일 ===== */
-  const styles = {
-    frame: {
-      minHeight: "100vh",
-      background: "#eef2f7",
-      display: "flex",
-      justifyContent: "center",
-    },
-    card: {
-      width: "100%",
-      maxWidth: 420,
-      height: "100vh",
-      maxHeight: 820,
-      background: "#f8fafc",
-      boxSizing: "border-box",
-      padding: "8px 16px 10px",
-      display: "flex",
-      flexDirection: "column",
-    },
-    top: {
-      display: "flex",
-      alignItems: "center",
-      gap: 10,
-      padding: "4px 0 8px",
-      flexShrink: 0,
-    },
-    topTitle: {
-      fontWeight: 800,
-      flex: 1,
-    },
-    topStarBtn: {
-      border: 0,
-      background: "transparent",
-      width: 32,
-      height: 32,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      padding: 0,
-      cursor: "pointer",
-    },
-    scroll: {
-      flex: 1,
-      overflowY: "auto",
-      paddingBottom: 16,
-    },
-
-    // 🔹 메인 이미지 영역
-    heroWrap: {
-      position: "relative",
-      width: "100%",
-      borderRadius: 16,
-      overflow: "hidden",
-      background: "#e2e8f0",
-    },
-    hero: {
-      width: "100%",
-      aspectRatio: "16/9",
-      objectFit: "cover",
-      display: "block",
-      cursor: "pointer",
-    },
-    heroEmpty: {
-      width: "100%",
-      aspectRatio: "16/9",
-      borderRadius: 16,
-      background: "#e2e8f0",
-      display: "grid",
-      placeItems: "center",
-      color: "#94a3b8",
-      fontSize: 13,
-    },
-    heroNavBtn: (pos) => ({
-      position: "absolute",
-      top: "50%",
-      transform: "translateY(-50%)",
-      [pos]: 6,
-      width: 28,
-      height: 28,
-      borderRadius: "999px",
-      border: "none",
-      background: "rgba(15,23,42,0.6)",
-      color: "#fff",
-      cursor: "pointer",
-      fontSize: 16,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-    }),
-    heroPager: {
-      position: "absolute",
-      bottom: 8,
-      left: 0,
-      right: 0,
-      display: "flex",
-      justifyContent: "center",
-      gap: 6,
-    },
-    heroDot: (active) => ({
-      width: active ? 8 : 6,
-      height: active ? 8 : 6,
-      borderRadius: "999px",
-      background: active ? "#f97316" : "rgba(148,163,184,0.8)",
-    }),
-
-    profileRow: {
-      display: "flex",
-      alignItems: "center",
-      gap: 12,
-      marginTop: 12,
-    },
-    avatar: {
-      width: 56,
-      height: 56,
-      borderRadius: "50%",
-      objectFit: "cover",
-      background: "#e2e8f0",
-      flexShrink: 0,
-    },
-    name: { fontSize: 16, fontWeight: 800, color: "#0f172a" },
-    major: { fontSize: 13, color: "#6b7280", marginTop: 2 },
-    ratingRow: {
-      display: "flex",
-      alignItems: "center",
-      gap: 4,
-      marginTop: 4,
-      fontSize: 13,
-      color: "#4b5563",
-    },
-    ratingStar: { color: "#f59e0b", fontSize: 14 },
-    title: {
-      marginTop: 16,
-      fontSize: 18,
-      fontWeight: 800,
-      color: "#0f172a",
-    },
-    content: {
-      marginTop: 10,
-      fontSize: 14,
-      color: "#334155",
-      lineHeight: 1.6,
-      whiteSpace: "pre-wrap",
-    },
-    tagRow: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: 6,
-      marginTop: 12,
-    },
-    chip: {
-      fontSize: 11,
-      padding: "6px 10px",
-      borderRadius: 999,
-      background: "#f1f5f9",
-      color: "#475569",
-    },
-    extraNote: {
-      marginTop: 10,
-      padding: 12,
-      borderRadius: 12,
-      background: "#f1f5f9",
-      color: "#334155",
-      fontSize: 13,
-      lineHeight: 1.5,
-    },
-    reviewHeaderTitle: {
-      fontWeight: 700,
-      fontSize: 15,
-      marginTop: 20,
-      marginBottom: 8,
-    },
-    reviewEmpty: { fontSize: 13, color: "#9ca3af" },
-    reviewCard: {
-      background: "#fff",
-      border: "1px solid #e5e7eb",
-      borderRadius: 16,
-      padding: 14,
-      marginTop: 10,
-      boxSizing: "border-box",
-    },
-    reviewHeaderRow: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      marginBottom: 6,
-    },
-    reviewName: { fontWeight: 700, fontSize: 14, color: "#0f172a" },
-    reviewBody: { fontSize: 13, color: "#111827", marginTop: 4 },
-    reviewDate: {
-      marginTop: 8,
-      fontSize: 12,
-      color: "#94a3b8",
-    },
-    bottomWrap: {
-      flexShrink: 0,
-      borderTop: "1px solid #e5e7eb",
-      background: "#ffffff",
-      marginLeft: -16,
-      marginRight: -16,
-      paddingTop: 6,
-    },
-    bottomInner: {
-      maxWidth: 420,
-      margin: "0 auto",
-      display: "flex",
-      gap: 8,
-      padding: "8px 16px 6px",
-      boxSizing: "border-box",
-    },
-    deleteBtn: {
-      flex: 1,
-      borderRadius: 12,
-      padding: "10px 12px",
-      border: 0,
-      fontWeight: 700,
-      fontSize: 14,
-      cursor: "pointer",
-      background: "#ef4444",
-      color: "#fff",
-    },
-    bottomInput: {
-      flex: 1,
-      border: "1px solid #e5e7eb",
-      borderRadius: 999,
-      padding: "10px 14px",
-      outline: "none",
-      fontSize: 14,
-    },
-    bottomSend: {
-      border: 0,
-      borderRadius: 999,
-      padding: "0 16px",
-      background: "#4f46e5",
-      color: "#fff",
-      fontWeight: 700,
-      cursor: "pointer",
-      fontSize: 14,
-    },
-    loginHint: {
-      padding: 10,
-      fontSize: 13,
-      color: "#64748b",
-    },
-
-    // 🔹 라이트박스
-    lightboxOverlay: {
-      position: "fixed",
-      inset: 0,
-      background: "rgba(15,23,42,0.85)",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 100,
-      padding: 16,
-      boxSizing: "border-box",
-    },
-    lightboxImgWrap: {
-      position: "relative",
-      maxWidth: "100%",
-      maxHeight: "85vh",
-    },
-    lightboxImg: {
-      maxWidth: "100%",
-      maxHeight: "85vh",
-      objectFit: "contain",
-      display: "block",
-      borderRadius: 16,
-      background: "#020617",
-    },
-    // ✅ 닫기 버튼: 화면 오른쪽 위 고정
-    lightboxClose: {
-      position: "fixed",
-      top: 16,
-      right: 16,
-      width: 32,
-      height: 32,
-      borderRadius: "999px",
-      border: "none",
-      background: "rgba(15,23,42,0.9)",
-      color: "#e5e7eb",
-      cursor: "pointer",
-      fontSize: 18,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 101,
-    },
-    // ✅ 이전/다음 버튼: 화면 양옆 가운데 고정
-    lightboxNavBtn: (pos) => ({
-      position: "fixed",
-      top: "50%",
-      transform: "translateY(-50%)",
-      [pos]: 16,
-      width: 32,
-      height: 32,
-      borderRadius: "999px",
-      border: "none",
-      background: "rgba(15,23,42,0.9)",
-      color: "#e5e7eb",
-      cursor: "pointer",
-      fontSize: 20,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      zIndex: 101,
-    }),
-  };
-
   const avatarUrl = (() => {
     const val =
       data?.authorProfileImageUrl || data?.profileImageUrl || data?.avatarUrl;
@@ -684,43 +374,38 @@ export default function TalentDetail() {
     return /^https?:\/\//i.test(val) ? val : API_BASE + val;
   })();
 
-  return (
-    <div style={styles.frame}>
-      {/* 스크롤바 숨김 */}
-      <style>
-        {`
-          .td-scroll::-webkit-scrollbar {
-            display: none;
-          }
-          .td-scroll {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-          }
-        `}
-      </style>
+  if (!data) {
+    return (
+      <div className="talent-frame">
+        <div className="talent-card">
+          <div className="talent-loading">불러오는 중...</div>
+        </div>
+      </div>
+    );
+  }
 
-      <div style={styles.card}>
+  const profileClickable = !!data?.authorUserId;
+
+  return (
+    <div className="talent-frame">
+      <div className="talent-card">
         {/* 상단 바 */}
-        <div style={styles.top}>
+        <div className="talent-topbar">
           <button
+            type="button"
+            className="talent-back-btn"
             onClick={() => nav(-1)}
-            style={{
-              border: 0,
-              background: "transparent",
-              fontSize: 20,
-              cursor: "pointer",
-            }}
           >
             ←
           </button>
 
-          <div style={styles.topTitle}>상세정보</div>
+          <div className="talent-top-title">상세정보</div>
 
           {me && (
             <button
               type="button"
+              className="talent-top-star-btn"
               onClick={toggleFavorite}
-              style={styles.topStarBtn}
               aria-label={favorited ? "즐겨찾기 해제" : "즐겨찾기 추가"}
             >
               <StarIcon filled={favorited} />
@@ -729,193 +414,184 @@ export default function TalentDetail() {
         </div>
 
         {/* 스크롤 영역 */}
-        <div style={styles.scroll} className="td-scroll">
-          {!data ? (
-            <div style={{ padding: 20 }}>불러오는 중...</div>
+        <div className="talent-scroll inner-scroll">
+          {/* 포트폴리오 이미지 슬라이드 */}
+          {hasImages ? (
+            <div
+              className="talent-hero-wrap"
+              onClick={() => setLightboxOpen(true)}
+            >
+              <img
+                src={currentImageUrl}
+                alt="portfolio"
+                className="talent-hero-img"
+              />
+              {portfolioUrls.length > 1 && (
+                <>
+                  <button
+                    type="button"
+                    className="talent-hero-nav-btn left"
+                    onClick={(e) => prevImage(e)}
+                  >
+                    ‹
+                  </button>
+                  <button
+                    type="button"
+                    className="talent-hero-nav-btn right"
+                    onClick={(e) => nextImage(e)}
+                  >
+                    ›
+                  </button>
+                  <div className="talent-hero-pager">
+                    {portfolioUrls.map((_, i) => (
+                      <div
+                        key={i}
+                        className={
+                          "talent-hero-dot" + (i === imgIndex ? " active" : "")
+                        }
+                      />
+                    ))}
+                  </div>
+                </>
+              )}
+            </div>
           ) : (
-            <>
-              {/* 🔹 포트폴리오 이미지 슬라이드 */}
-              {hasImages ? (
-                <div
-                  style={styles.heroWrap}
-                  onClick={() => setLightboxOpen(true)}
-                >
-                  <img
-                    src={currentImageUrl}
-                    alt="portfolio"
-                    style={styles.hero}
-                  />
-                  {portfolioUrls.length > 1 && (
-                    <>
-                      <button
-                        type="button"
-                        style={styles.heroNavBtn("left")}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          prevImage(e);
-                        }}
-                      >
-                        ‹
-                      </button>
-                      <button
-                        type="button"
-                        style={styles.heroNavBtn("right")}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          nextImage(e);
-                        }}
-                      >
-                        ›
-                      </button>
-                      <div style={styles.heroPager}>
-                        {portfolioUrls.map((_, i) => (
-                          <div
-                            key={i}
-                            style={styles.heroDot(i === imgIndex)}
-                          />
-                        ))}
-                      </div>
-                    </>
-                  )}
-                </div>
-              ) : (
-                <div style={styles.heroEmpty}>포트폴리오 이미지가 없습니다.</div>
-              )}
-
-              {/* 프로필/이름 클릭 시 UserProfile 이동 */}
-              <div
-                style={{
-                  ...styles.profileRow,
-                  cursor: data?.authorUserId ? "pointer" : "default",
-                }}
-                role="button"
-                tabIndex={0}
-                onClick={goAuthorProfile}
-                onKeyDown={(e) => e.key === "Enter" && goAuthorProfile()}
-              >
-                {avatarUrl ? (
-                  <img src={avatarUrl} alt="avatar" style={styles.avatar} />
-                ) : (
-                  <div style={styles.avatar} />
-                )}
-                <div>
-                  <div style={styles.name}>{data.authorName}</div>
-                  <div style={styles.major}>
-                    {data.authorMajor || "전공 미입력"}
-                  </div>
-                  <div style={styles.ratingRow}>
-                    <span style={styles.ratingStar}>★</span>
-                    <span>{avgScore}</span>
-                    <span style={{ color: "#6b7280" }}>
-                      {reviewCount > 0
-                        ? ` (${reviewCount}개 후기)`
-                        : " (후기 없음)"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* 제목 + 내용 */}
-              <div style={styles.title}>{data.title}</div>
-              <div style={styles.content}>{data.content}</div>
-
-              {/* 태그 */}
-              <div style={styles.tagRow}>
-                {(data.tagNames || []).map((t, i) => (
-                  <span key={i} style={styles.chip}>
-                    {t?.startsWith("#") ? t : `#${t}`}
-                  </span>
-                ))}
-              </div>
-
-              {/* 참고사항 */}
-              {data.extraNote && (
-                <div style={styles.extraNote}>
-                  <strong>참고사항</strong>
-                  <br />
-                  {data.extraNote}
-                </div>
-              )}
-
-              {/* 후기 섹션 */}
-              <div style={styles.reviewHeaderTitle}>
-                후기 {reviewCount > 0 ? `(${reviewCount})` : ""}
-              </div>
-
-              {reviews.length === 0 && (
-                <div style={styles.reviewEmpty}>
-                  아직 받은 후기가 없습니다.
-                </div>
-              )}
-
-              {reviews.map((item) => {
-                const reviewer = item.reviewer || {};
-
-                const name =
-                  item.reviewerName ||
-                  reviewer.name ||
-                  reviewer.username ||
-                  item.reviewerUserId ||
-                  "익명";
-
-                const major =
-                  item.reviewerMajor ||
-                  reviewer.major ||
-                  reviewer.department ||
-                  "전공 미입력";
-
-                const rawScore =
-                  typeof item.score === "number"
-                    ? item.score
-                    : typeof item.rating === "number"
-                    ? item.rating
-                    : typeof item.kindnessScore === "number"
-                    ? item.kindnessScore
-                    : null;
-
-                const rating =
-                  rawScore == null
-                    ? 0
-                    : Math.max(0, Math.min(5, Number(rawScore) || 0));
-
-                const comment =
-                  item.content || item.comment || "내용이 없습니다.";
-
-                const createdAt = item.createdAt;
-                const dateLabel = createdAt ? createdAt.slice(0, 10) : "";
-
-                return (
-                  <div key={item.id} style={styles.reviewCard}>
-                    <div style={styles.reviewHeaderRow}>
-                      <div style={styles.reviewName}>
-                        {name} · {major}
-                      </div>
-                      <div>
-                        {Array.from({ length: 5 }).map((_, i) => (
-                          <span
-                            key={i}
-                            style={{
-                              color: i < rating ? "#fbbf24" : "#e5e7eb",
-                              fontSize: 14,
-                            }}
-                          >
-                            ★
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div style={styles.reviewBody}>{comment}</div>
-
-                    <div style={styles.reviewDate}>{dateLabel}</div>
-                  </div>
-                );
-              })}
-            </>
+            <div className="talent-hero-empty">
+              포트폴리오 이미지가 없습니다.
+            </div>
           )}
 
+          {/* 프로필/이름 (클릭 시 UserProfile 이동) */}
+          <div
+            className={
+              "talent-profile-row" + (profileClickable ? " clickable" : "")
+            }
+            role={profileClickable ? "button" : undefined}
+            tabIndex={profileClickable ? 0 : -1}
+            onClick={profileClickable ? goAuthorProfile : undefined}
+            onKeyDown={(e) =>
+              profileClickable && e.key === "Enter" && goAuthorProfile()
+            }
+          >
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="avatar" className="talent-avatar" />
+            ) : (
+              <div className="talent-avatar" />
+            )}
+            <div>
+              <div className="talent-name">{data.authorName}</div>
+              <div className="talent-major">
+                {data.authorMajor || "전공 미입력"}
+              </div>
+              <div className="talent-rating-row">
+                <span className="talent-rating-star">★</span>
+                <span>{avgScore}</span>
+                <span className="talent-rating-count">
+                  {reviewCount > 0
+                    ? ` (${reviewCount}개 후기)`
+                    : " (후기 없음)"}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* 제목 + 내용 */}
+          <div className="talent-title">{data.title}</div>
+          <div className="talent-content">{data.content}</div>
+
+          {/* 태그 */}
+          <div className="talent-tag-row">
+            {(data.tagNames || []).map((t, i) => (
+              <span key={i} className="talent-chip">
+                {t?.startsWith("#") ? t : `#${t}`}
+              </span>
+            ))}
+          </div>
+
+          {/* 참고사항 */}
+          {data.extraNote && (
+            <div className="talent-extra-note">
+              <strong>참고사항</strong>
+              <br />
+              {data.extraNote}
+            </div>
+          )}
+
+          {/* 후기 섹션 */}
+          <div className="talent-review-header-title">
+            후기 {reviewCount > 0 ? `(${reviewCount})` : ""}
+          </div>
+
+          {reviews.length === 0 && (
+            <div className="talent-review-empty">
+              아직 받은 후기가 없습니다.
+            </div>
+          )}
+
+          {reviews.map((item) => {
+            const reviewer = item.reviewer || {};
+
+            const name =
+              item.reviewerName ||
+              reviewer.name ||
+              reviewer.username ||
+              item.reviewerUserId ||
+              "익명";
+
+            const major =
+              item.reviewerMajor ||
+              reviewer.major ||
+              reviewer.department ||
+              "전공 미입력";
+
+            const rawScore =
+              typeof item.score === "number"
+                ? item.score
+                : typeof item.rating === "number"
+                ? item.rating
+                : typeof item.kindnessScore === "number"
+                ? item.kindnessScore
+                : null;
+
+            const rating =
+              rawScore == null
+                ? 0
+                : Math.max(0, Math.min(5, Number(rawScore) || 0));
+
+            const comment =
+              item.content || item.comment || "내용이 없습니다.";
+
+            const createdAt = item.createdAt;
+            const dateLabel = createdAt ? String(createdAt).slice(0, 10) : "";
+
+            return (
+              <div key={item.id} className="talent-review-card">
+                <div className="talent-review-header-row">
+                  <div className="talent-review-name">
+                    {name} · {major}
+                  </div>
+                  <div>
+                    {Array.from({ length: 5 }).map((_, i) => (
+                      <span
+                        key={i}
+                        className={
+                          "talent-review-star" + (i < rating ? " filled" : "")
+                        }
+                      >
+                        ★
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="talent-review-body">{comment}</div>
+                <div className="talent-review-date">{dateLabel}</div>
+              </div>
+            );
+          })}
+
           {!me && (
-            <div style={styles.loginHint}>
+            <div className="talent-login-hint">
               채팅을 사용하려면 먼저 로그인해주세요.
             </div>
           )}
@@ -923,10 +599,10 @@ export default function TalentDetail() {
 
         {/* 하단 바 */}
         {me && !isMyPost && (
-          <div style={styles.bottomWrap}>
-            <div style={styles.bottomInner}>
+          <div className="talent-bottom-wrap">
+            <div className="talent-bottom-inner">
               <input
-                style={styles.bottomInput}
+                className="talent-bottom-input"
                 placeholder="안녕하세요, 궁금하신 점 문의드려요."
                 value={draft}
                 onChange={(e) => setDraft(e.target.value)}
@@ -934,7 +610,8 @@ export default function TalentDetail() {
                 disabled={creating}
               />
               <button
-                style={styles.bottomSend}
+                type="button"
+                className="talent-bottom-send"
                 onClick={goChatWithDraft}
                 disabled={creating}
               >
@@ -945,10 +622,11 @@ export default function TalentDetail() {
         )}
 
         {me && isMyPost && (
-          <div style={styles.bottomWrap}>
-            <div style={styles.bottomInner}>
+          <div className="talent-bottom-wrap">
+            <div className="talent-bottom-inner">
               <button
-                style={styles.deleteBtn}
+                type="button"
+                className="talent-delete-btn"
                 onClick={handleDelete}
                 disabled={deleting}
               >
@@ -959,51 +637,43 @@ export default function TalentDetail() {
         )}
       </div>
 
-      {/* 🔹 라이트박스 (이미지 크게 보기) */}
+      {/* 라이트박스 */}
       {lightboxOpen && hasImages && (
         <div
-          style={styles.lightboxOverlay}
+          className="talent-lightbox-overlay"
           onClick={(e) => {
             if (e.target === e.currentTarget) setLightboxOpen(false);
           }}
         >
-          <div style={styles.lightboxImgWrap}>
+          <div className="talent-lightbox-img-wrap">
             <img
               src={currentImageUrl}
               alt={`portfolio-large-${imgIndex}`}
-              style={styles.lightboxImg}
+              className="talent-lightbox-img"
             />
           </div>
 
-          {/* 고정된 닫기 버튼 */}
           <button
             type="button"
-            style={styles.lightboxClose}
+            className="talent-lightbox-close"
             onClick={() => setLightboxOpen(false)}
           >
             ✕
           </button>
 
-          {/* 고정된 이전/다음 버튼 */}
           {portfolioUrls.length > 1 && (
             <>
               <button
                 type="button"
-                style={styles.lightboxNavBtn("left")}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  prevImage(e);
-                }}
+                className="talent-lightbox-nav-btn left"
+                onClick={(e) => prevImage(e)}
               >
                 ‹
               </button>
               <button
                 type="button"
-                style={styles.lightboxNavBtn("right")}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  nextImage(e);
-                }}
+                className="talent-lightbox-nav-btn right"
+                onClick={(e) => nextImage(e)}
               >
                 ›
               </button>

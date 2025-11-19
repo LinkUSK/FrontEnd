@@ -1,11 +1,7 @@
 // src/pages/CreateTalent.jsx
-import React, {
-  useEffect,
-  useMemo,
-  useState,
-  useRef,
-} from "react";
+import React, { useEffect, useMemo, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import "../styles/talent/createTalent.css";
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -42,7 +38,7 @@ function toPreviewUrl(u) {
 
 export default function CreateTalent() {
   const nav = useNavigate();
-  const loc = useLocation();
+  const loc = useLocation(); // (필요하면 나중에 탭바용으로 사용)
 
   const [categories, setCategories] = useState([]);
   const [availTags, setAvailTags] = useState([]);
@@ -58,7 +54,6 @@ export default function CreateTalent() {
   const [busy, setBusy] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  // 🔥 AI 태그
   const [aiLoading, setAiLoading] = useState(false);
 
   const [tagModalOpen, setTagModalOpen] = useState(false);
@@ -157,7 +152,7 @@ export default function CreateTalent() {
         return;
       }
 
-      // 태그 목록 불러오기 (비어있을 시)
+      // 태그 목록 없으면 먼저 불러오기
       let baseTags = availTags;
       if (baseTags.length === 0) {
         const temp = await apiGet("/api/meta/tags", { category });
@@ -219,7 +214,7 @@ export default function CreateTalent() {
   useEffect(() => {
     setAvailTags([]);
     setSelectedTagIds([]);
-    setAiTagIds([]); // 카테고리 바뀔 때 AI 태그 표시도 초기화
+    setAiTagIds([]);
     setNewTagInput("");
   }, [category]);
 
@@ -227,7 +222,6 @@ export default function CreateTalent() {
     id = Number(id);
     setSelectedTagIds((prev) => {
       if (prev.includes(id)) {
-        // 선택 해제하면 AI 태그 표시도 같이 제거
         setAiTagIds((aiPrev) => aiPrev.filter((x) => x !== id));
         return prev.filter((x) => x !== id);
       } else {
@@ -349,320 +343,40 @@ export default function CreateTalent() {
     }
   }
 
-  //
-  // ===== CSS =====
-  //
-  const styles = {
-    frame: {
-      background: "#eef2f7",
-      minHeight: "100vh",
-      width: "100vw",
-      overflow: "hidden",
-      display: "flex",
-      justifyContent: "center",
-    },
-    wrap: {
-      maxWidth: 420,
-      width: "100%",
-      maxHeight: "100vh",
-      background: "#f8fafc",
-      display: "flex",
-      flexDirection: "column",
-      position: "relative",
-    },
-    inner: {
-      flex: 1,
-      overflowY: "auto",
-      padding: "0 16px 140px",
-      boxSizing: "border-box",
-    },
-    top: {
-      fontWeight: 800,
-      fontSize: 22,
-      padding: "18px 2px 10px",
-      textAlign: "center",
-      flexShrink: 0,
-    },
-
-    label: {
-      fontSize: 13,
-      color: "#475569",
-      marginTop: 12,
-      fontWeight: 700,
-      display: "block",
-    },
-    field: {
-      width: "100%",
-      padding: "12px 14px",
-      borderRadius: 12,
-      border: "1px solid #e5e7eb",
-      background: "#fff",
-      boxSizing: "border-box",
-    },
-    area: {
-      width: "100%",
-      minHeight: 110,
-      padding: "12px 14px",
-      borderRadius: 12,
-      border: "1px solid #e5e7eb",
-      background: "#fff",
-      resize: "vertical",
-      boxSizing: "border-box",
-    },
-    btn: {
-      width: "100%",
-      border: 0,
-      borderRadius: 12,
-      padding: "14px 14px",
-      fontWeight: 700,
-      cursor: "pointer",
-      background: "#4f46e5",
-      color: "#fff",
-      marginTop: 20,
-    },
-
-    chipWrap: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: 8,
-      marginTop: 10,
-      alignItems: "center",
-    },
-    // 일반 태그 & AI 태그 둘 다 여기서 처리
-    chip: (isActive, isAi) => ({
-      display: "inline-flex",
-      alignItems: "center",
-      gap: 8,
-      padding: "8px 12px",
-      fontSize: 13,
-      borderRadius: 999,
-      border: isAi
-        ? "1px solid #38bdf8"
-        : isActive
-        ? "1px solid #4f46e5"
-        : "1px solid #e5e7eb",
-      background: isAi
-        ? "#e0f2fe"
-        : isActive
-        ? "#eef2ff"
-        : "#fff",
-      color: isAi
-        ? "#0369a1"
-        : isActive
-        ? "#3730a3"
-        : "#111827",
-      whiteSpace: "nowrap",
-    }),
-    chipText: { cursor: "pointer" },
-    chipX: {
-      fontWeight: 900,
-      color: "#9ca3af",
-      cursor: "pointer",
-    },
-
-    addBtn: {
-  border: 0,
-  padding: "8px 12px",
-  borderRadius: 999,
-  background: "#0f172a",  // 짙은 검은색 느낌
-  color: "#fff",
-  fontWeight: 700,
-  cursor: "pointer",
-  whiteSpace: "nowrap",
-  fontSize: 13,
-},
-
-    // 🔵 AI 버튼 - 흰 배경 + 파란 포인트
-    aiBtn: {
-      border: "1px solid rgba(59,130,246,0.8)",
-      padding: "8px 18px",
-      borderRadius: 999,
-      background: "#ffffff",
-      color: "#1d4ed8",
-      fontWeight: 800,
-      fontSize: 14,
-      cursor: "pointer",
-      whiteSpace: "nowrap",
-      letterSpacing: "0.3px",
-      boxShadow: "0 0 8px rgba(59,130,246,0.45)",
-      textShadow: "0 0 4px rgba(59,130,246,0.45)",
-      display: "inline-flex",
-      alignItems: "center",
-      justifyContent: "center",
-      gap: 4,
-      transition: "transform 0.12s ease, box-shadow 0.12s ease, background 0.12s ease",
-    },
-
-    uploadBox: {
-      marginTop: 10,
-      display: "flex",
-      flexDirection: "column",
-      gap: 10,
-    },
-    uploadArea: {
-      width: 160,
-      height: 160,
-      borderRadius: 24,
-      border: "1px solid #d1d5db",
-      background: "#f9fafb",
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
-      cursor: "pointer",
-    },
-    thumbRow: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: 10,
-    },
-    thumbItem: {
-      width: 80,
-      height: 80,
-      borderRadius: 16,
-      overflow: "hidden",
-      position: "relative",
-      background: "#e5e7eb",
-    },
-    thumbImg: {
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",
-    },
-    thumbRemoveBtn: {
-      position: "absolute",
-      right: 4,
-      top: 4,
-      border: 0,
-      width: 20,
-      height: 20,
-      borderRadius: "50%",
-      background: "rgba(0,0,0,.5)",
-      color: "#fff",
-      cursor: "pointer",
-    },
-
-    overlay: {
-      position: "fixed",
-      inset: 0,
-      background: "rgba(15,23,42,.35)",
-      display: "grid",
-      placeItems: "center",
-      padding: 16,
-      zIndex: 999,
-    },
-    modal: {
-      width: "100%",
-      maxWidth: 560,
-      background: "#fff",
-      borderRadius: 18,
-      border: "2px solid #2563eb",
-      padding: 16,
-      position: "relative",
-      boxSizing: "border-box",
-    },
-    modalClose: {
-      position: "absolute",
-      right: 10,
-      top: 10,
-      width: 30,
-      height: 30,
-      borderRadius: 999,
-      border: "1px solid #ddd",
-      background: "#fff",
-      cursor: "pointer",
-    },
-    modalRow: {
-      display: "grid",
-      gridTemplateColumns: "1fr auto",
-      gap: 10,
-      marginTop: 10,
-    },
-    modalList: {
-      display: "flex",
-      flexWrap: "wrap",
-      gap: 10,
-      marginTop: 14,
-    },
-
-    bottomWrap: {
-      position: "fixed",
-      bottom: 0,
-      left: 0,
-      right: 0,
-      background: "#fff",
-      borderTop: "1px solid #e5e7eb",
-    },
-    bottomInner: {
-      maxWidth: 420,
-      margin: "0 auto",
-      display: "flex",
-    },
-    tab: (active) => ({
-      flex: 1,
-      textAlign: "center",
-      padding: "8px 0",
-      borderTop: active ? "2px solid #4f46e5" : "2px solid transparent",
-      color: active ? "#4f46e5" : "#94a3b8",
-      fontSize: 12,
-      fontWeight: active ? 700 : 400,
-      cursor: "pointer",
-    }),
-  };
-
-  function BottomBar() {
-    const is = (p) =>
-      p === "/home" ? loc.pathname === "/home" : loc.pathname.startsWith(p);
-
-    return (
-      <div style={styles.bottomWrap}>
-        <div style={styles.bottomInner}>
-          <div style={styles.tab(is("/home"))} onClick={() => nav("/home")}>
-            <div style={{ fontSize: 20 }}>🏠</div>
-            <div>홈</div>
-          </div>
-          <div style={styles.tab(is("/create"))} onClick={() => nav("/create")}>
-            <div style={{ fontSize: 20 }}>✏️</div>
-            <div>재능 등록</div>
-          </div>
-          <div style={styles.tab(is("/chat"))} onClick={() => nav("/chat")}>
-            <div style={{ fontSize: 20 }}>💬</div>
-            <div>채팅</div>
-          </div>
-          <div style={styles.tab(is("/my"))} onClick={() => nav("/my")}>
-            <div style={{ fontSize: 20 }}>👤</div>
-            <div>마이페이지</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div style={styles.frame}>
-      <div style={styles.wrap}>
-        <div className="inner-scroll" style={styles.inner}>
-          <div style={styles.top}>재능 등록하기</div>
+    <div className="ct-frame">
+      <div className="ct-wrap">
+        <div className="inner-scroll ct-inner">
+          <div className="ct-top">
+            <button
+              type="button"
+              className="ct-back-btn"
+              onClick={() => nav("/home")}
+            >
+              ←
+            </button>
+            재능 등록하기
+          </div>
 
-          <label style={styles.label}>제목 *</label>
+          <label className="ct-label">제목 *</label>
           <input
-            style={styles.field}
+            className="ct-field"
             placeholder="예: 포스터 디자인"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
           />
 
-          <label style={styles.label}>상세 설명 *</label>
+          <label className="ct-label">상세 설명 *</label>
           <textarea
-            style={styles.area}
+            className="ct-area"
             placeholder="내용을 입력하세요"
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
 
-          <label style={styles.label}>카테고리 *</label>
+          <label className="ct-label">카테고리 *</label>
           <select
-            style={styles.field}
+            className="ct-field"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
@@ -674,34 +388,39 @@ export default function CreateTalent() {
             ))}
           </select>
 
-          <label style={styles.label}>태그 선택</label>
+          <label className="ct-label">태그 선택</label>
 
-          <div style={styles.chipWrap}>
-            {/* 🔹 AI 버튼: 항상 맨 앞 */}
+          <div className="ct-chip-wrap">
+            {/* 🔹 AI 버튼 */}
             <button
-              style={styles.aiBtn}
+              type="button"
+              className="ct-ai-btn"
               disabled={aiLoading}
               onClick={applyAiTags}
             >
               {aiLoading ? "…" : "AI"}
             </button>
 
-            {/* 🔹 선택된 태그들 (AI 태그는 파란 레이아웃) */}
+            {/* 🔹 선택된 태그 목록 */}
             {selectedTags.map((t) => {
               const isAi = aiTagIds.includes(t.id);
+              const chipClass = [
+                "ct-chip",
+                "active",
+                isAi ? "ai" : "",
+              ]
+                .filter(Boolean)
+                .join(" ");
               return (
-                <div
-                  key={`sel-${t.id}`}
-                  style={styles.chip(true, isAi)}
-                >
+                <div key={`sel-${t.id}`} className={chipClass}>
                   <span
-                    style={styles.chipText}
+                    className="ct-chip-text"
                     onClick={() => toggleTagById(t.id)}
                   >
                     {t.name.startsWith("#") ? t.name : `#${t.name}`}
                   </span>
                   <span
-                    style={styles.chipX}
+                    className="ct-chip-x"
                     onClick={(e) => {
                       e.stopPropagation();
                       removeTagById(t.id);
@@ -713,41 +432,30 @@ export default function CreateTalent() {
               );
             })}
 
-            {/* 🔹 새 태그 버튼 (맨 뒤) */}
-            <button style={styles.addBtn} onClick={openTagModal}>
+            {/* 🔹 새 태그 버튼 */}
+            <button
+              type="button"
+              className="ct-add-btn"
+              onClick={openTagModal}
+            >
               + 새 태그
             </button>
           </div>
 
           {/* 이미지 섹션 */}
-          <label style={styles.label}>포트폴리오 이미지</label>
-          <div style={styles.uploadBox}>
+          <label className="ct-label">포트폴리오 이미지</label>
+          <div className="ct-upload-box">
             <div
-              style={styles.uploadArea}
+              className="ct-upload-area"
               onClick={() => fileInputRef.current?.click()}
             >
-              <div
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
-                  border: "1px dashed #aaa",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: 10,
-                }}
-              >
-                ⬆
-              </div>
+              <div className="ct-upload-icon">⬆</div>
               <div>이미지 업로드</div>
-              <div style={{ fontSize: 11, color: "#868e96" }}>
+              <div className="ct-upload-guide">
                 클릭하여 사진 선택 (최대 10장)
               </div>
               {uploading && (
-                <div style={{ marginTop: 6, fontSize: 11, color: "#6366f1" }}>
-                  업로드 중...
-                </div>
+                <div className="ct-upload-loading">업로드 중...</div>
               )}
             </div>
 
@@ -761,17 +469,17 @@ export default function CreateTalent() {
             />
 
             {imageUrls.length > 0 && (
-              <div style={styles.thumbRow}>
+              <div className="ct-thumb-row">
                 {imageUrls.map((url, idx) => (
-                  <div key={idx} style={styles.thumbItem}>
+                  <div key={idx} className="ct-thumb-item">
                     <img
                       src={toPreviewUrl(url)}
                       alt="미리보기"
-                      style={styles.thumbImg}
+                      className="ct-thumb-img"
                     />
                     <button
                       type="button"
-                      style={styles.thumbRemoveBtn}
+                      className="ct-thumb-remove"
                       onClick={() => removeImage(idx)}
                     >
                       ×
@@ -782,18 +490,19 @@ export default function CreateTalent() {
             )}
           </div>
 
-          <label style={styles.label}>추가 내용 *</label>
+          <label className="ct-label">추가 내용 *</label>
           <textarea
-            style={styles.area}
+            className="ct-area"
             placeholder="가격, 일정 등 추가 내용을 입력하세요."
             value={extraNote}
             onChange={(e) => setExtraNote(e.target.value)}
           />
 
           <button
+            type="button"
             disabled={busy || uploading}
             onClick={onSubmit}
-            style={styles.btn}
+            className="ct-submit-btn"
           >
             {busy ? "작성 중…" : "등록 완료"}
           </button>
@@ -802,23 +511,25 @@ export default function CreateTalent() {
         {/* 태그 모달 */}
         {tagModalOpen && (
           <div
-            style={styles.overlay}
+            className="ct-overlay"
             onClick={(e) => {
               if (e.target === e.currentTarget) closeTagModal();
             }}
           >
-            <div style={styles.modal}>
-              <button style={styles.modalClose} onClick={closeTagModal}>
+            <div className="ct-modal">
+              <button
+                type="button"
+                className="ct-modal-close"
+                onClick={closeTagModal}
+              >
                 ✖
               </button>
 
-              <div style={{ fontSize: 14, fontWeight: 800 }}>
-                태그 추가
-              </div>
+              <div className="ct-modal-title">태그 추가</div>
 
-              <div style={styles.modalRow}>
+              <div className="ct-modal-row">
                 <input
-                  style={styles.field}
+                  className="ct-field"
                   placeholder="예: #포스터 / #3D / #디자인"
                   value={newTagInput}
                   onChange={(e) => setNewTagInput(e.target.value)}
@@ -831,30 +542,27 @@ export default function CreateTalent() {
                 />
                 <button
                   type="button"
-                  style={styles.aiBtn}
+                  className="ct-modal-add-btn"
                   onClick={createNewTag}
                 >
                   + 추가
                 </button>
               </div>
 
-              <div style={styles.modalList}>
+              <div className="ct-modal-list">
                 {availTags.map((t) => {
                   const active = selectedTagIds.includes(t.id);
+                  const cls = [
+                    "ct-modal-chip",
+                    active ? "active" : "",
+                  ]
+                    .filter(Boolean)
+                    .join(" ");
                   return (
                     <div
                       key={`modal-${t.id}`}
+                      className={cls}
                       onClick={() => toggleTagById(t.id)}
-                      style={{
-                        padding: "8px 12px",
-                        fontSize: 13,
-                        borderRadius: 999,
-                        border: active
-                          ? "1px solid #4f46e5"
-                          : "1px solid #e5e7eb",
-                        background: active ? "#eef2ff" : "#fff",
-                        cursor: "pointer",
-                      }}
                     >
                       {t.name.startsWith("#") ? t.name : `#${t.name}`}
                     </div>
@@ -864,8 +572,6 @@ export default function CreateTalent() {
             </div>
           </div>
         )}
-
-        <BottomBar />
       </div>
     </div>
   );

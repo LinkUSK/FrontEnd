@@ -1,79 +1,10 @@
 // src/pages/UserProfile.jsx
 import React, { useEffect, useState, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import "../styles/userProfile.css";
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
-
-/* 🔹 Home.jsx와 동일한 공통 스타일 주입 (body overflow hidden + .inner-scroll 스크롤바 숨김) */
-(function injectInnerScrollStyle() {
-  if (typeof document === "undefined") return;
-  if (document.getElementById("inner-scroll-style")) return;
-  const s = document.createElement("style");
-  s.id = "inner-scroll-style";
-  s.textContent = `
-    body {
-      margin: 0;
-      background: #eef2f7;
-      overflow: hidden;
-    }
-    .inner-scroll {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-    .inner-scroll::-webkit-scrollbar {
-      display: none;
-    }
-  `;
-  document.head.appendChild(s);
-})();
-
-const styles = {
-  reviewCard: {
-    background: "#fff",
-    border: "1px solid #e5e7eb",
-    borderRadius: 16,
-    padding: 14,
-    marginTop: 10,
-    boxSizing: "border-box",
-  },
-  reviewHeaderRow: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 6,
-  },
-  reviewName: { fontWeight: 700, fontSize: 14, color: "#0f172a" },
-  reviewBody: { fontSize: 13, color: "#111827", marginTop: 4 },
-  reviewDate: {
-    marginTop: 8,
-    fontSize: 12,
-    color: "#94a3b8",
-  },
-
-  frame: {
-    minHeight: "100vh",
-    background: "#eef2f7",
-    display: "flex",
-    justifyContent: "center",
-  },
-  wrap: {
-    maxWidth: 420,
-    width: "100%",
-    height: "100vh", // 🔹 뷰포트 기준 고정 높이
-    maxHeight: 820,
-    background: "#f8fafc",
-    boxSizing: "border-box",
-    display: "flex",
-    flexDirection: "column",
-  },
-  inner: {
-    flex: 1,
-    overflowY: "auto", // 🔹 이 영역만 스크롤
-    padding: "12px 16px 24px",
-    boxSizing: "border-box",
-  },
-};
 
 function authHeaders() {
   const t = localStorage.getItem(TOKEN_KEY);
@@ -167,15 +98,7 @@ export default function UserProfile() {
 
   if (!user) {
     return (
-      <div
-        style={{
-          minHeight: "100vh",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          background: "#eef2f7",
-        }}
-      >
+      <div className="userprofile-loading">
         로딩 중...
       </div>
     );
@@ -188,150 +111,60 @@ export default function UserProfile() {
     : null;
 
   return (
-    <div style={styles.frame}>
-      <div style={styles.wrap}>
-        {/* 🔹 Home처럼 카드 안 content 전체를 inner-scroll로 감싸서 스크롤 */}
-        <div className="inner-scroll" style={styles.inner}>
+    <div className="userprofile-frame">
+      <div className="userprofile-wrap">
+        {/* 상단 전체 스크롤 영역 */}
+        <div className="inner-scroll userprofile-inner">
           {/* 상단 뒤로가기 */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              marginBottom: 12,
-            }}
-          >
+          <div className="userprofile-topbar">
             <button
+              type="button"
+              className="userprofile-back-btn"
               onClick={() => nav(-1)}
-              style={{
-                border: 0,
-                background: "transparent",
-                fontSize: 20,
-                cursor: "pointer",
-                marginRight: 4,
-              }}
             >
               ←
             </button>
-            <div style={{ fontWeight: 800, fontSize: 18 }}>프로필</div>
+            <div className="userprofile-top-title">프로필</div>
           </div>
 
           {/* 프로필 메인 카드 */}
-          <div
-            style={{
-              background: "#ffffff",
-              borderRadius: 24,
-              border: "1px solid #e5e7eb",
-              padding: 16,
-              boxSizing: "border-box",
-              marginBottom: 16,
-            }}
-          >
-            <div style={{ display: "flex", gap: 12 }}>
-              <div
-                style={{
-                  width: 72,
-                  height: 72,
-                  borderRadius: "50%",
-                  background: "#e5e7eb",
-                  overflow: "hidden",
-                  flexShrink: 0,
-                }}
-              >
+          <div className="userprofile-main-card">
+            <div className="userprofile-main-header">
+              <div className="userprofile-avatar">
                 {avatarSrc && (
                   <img
                     src={avatarSrc}
                     alt="avatar"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      display: "block",
-                    }}
+                    className="userprofile-avatar-img"
                   />
                 )}
               </div>
 
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    marginBottom: 4,
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: 20,
-                      fontWeight: 800,
-                      color: "#0f172a",
-                    }}
-                  >
-                    {user.username}
-                  </div>
+              <div className="userprofile-main-info">
+                <div className="userprofile-name-row">
+                  <div className="userprofile-name">{user.username}</div>
                 </div>
 
-                <div
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    gap: 6,
-                    padding: "4px 10px",
-                    borderRadius: 999,
-                    background: "#eff6ff",
-                    color: "#1d4ed8",
-                    fontSize: 12,
-                    fontWeight: 600,
-                    marginBottom: 6,
-                  }}
-                >
-                  <span>✔</span>
+                <div className="userprofile-verify-badge">
+                  <span className="userprofile-verify-icon">✔</span>
                   <span>학교 인증 완료</span>
                 </div>
 
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    fontSize: 13,
-                    color: "#4b5563",
-                    marginTop: 4,
-                  }}
-                >
+                <div className="userprofile-info-row">
                   <span>📅</span>
                   <span>{joinedLabel || "가입일 정보 없음"}</span>
                 </div>
 
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    fontSize: 13,
-                    color: "#4b5563",
-                    marginTop: 4,
-                  }}
-                >
+                <div className="userprofile-info-row">
                   <span>🎓</span>
                   <span>{user.major || "전공 미입력"}</span>
                 </div>
 
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: 6,
-                    fontSize: 13,
-                    color: "#2563eb",
-                    marginTop: 4,
-                    wordBreak: "break-all",
-                  }}
-                >
+                <div className="userprofile-info-row userprofile-info-row-link">
                   <span>🔗</span>
                   <a
                     href={`mailto:${user.email}`}
-                    style={{ color: "#2563eb", textDecoration: "underline" }}
+                    className="userprofile-email-link"
                   >
                     {user.email}
                   </a>
@@ -340,108 +173,39 @@ export default function UserProfile() {
             </div>
 
             {/* 하단 통계 영역 */}
-            <div
-              style={{
-                display: "flex",
-                borderTop: "1px solid #e5e7eb",
-                marginTop: 12,
-                paddingTop: 12,
-                justifyContent: "space-between",
-                textAlign: "center",
-              }}
-            >
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "#9ca3af",
-                    marginBottom: 4,
-                  }}
-                >
-                  진행 중인 협업
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 800 }}>
-                  {ongoingCount}
-                </div>
+            <div className="userprofile-stats-row">
+              <div className="userprofile-stat">
+                <div className="userprofile-stat-label">진행 중인 협업</div>
+                <div className="userprofile-stat-value">{ongoingCount}</div>
               </div>
 
-              <div
-                style={{
-                  width: 1,
-                  background: "#e5e7eb",
-                  margin: "0 8px",
-                }}
-              />
+              <div className="userprofile-stat-divider" />
 
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "#9ca3af",
-                    marginBottom: 4,
-                  }}
-                >
-                  진행한 협업
-                </div>
-                <div style={{ fontSize: 16, fontWeight: 800 }}>
-                  {acceptedCount}
-                </div>
+              <div className="userprofile-stat">
+                <div className="userprofile-stat-label">진행한 협업</div>
+                <div className="userprofile-stat-value">{acceptedCount}</div>
               </div>
 
-              <div
-                style={{
-                  width: 1,
-                  background: "#e5e7eb",
-                  margin: "0 8px",
-                }}
-              />
+              <div className="userprofile-stat-divider" />
 
-              <div style={{ flex: 1 }}>
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: "#9ca3af",
-                    marginBottom: 4,
-                  }}
-                >
-                  협업 만족도
-                </div>
-                <div
-                  style={{
-                    fontSize: 16,
-                    fontWeight: 800,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: 4,
-                  }}
-                >
+              <div className="userprofile-stat">
+                <div className="userprofile-stat-label">협업 만족도</div>
+                <div className="userprofile-stat-value userprofile-stat-value-rating">
                   <span>{avgScore}</span>
-                  <span style={{ color: "#f59e0b" }}>★</span>
+                  <span className="userprofile-rating-star-main">★</span>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* 받은 후기 리스트 (여기도 같은 스크롤 영역 안) */}
-          <div style={{ marginTop: 8 }}>
-            <div
-              style={{
-                fontWeight: 700,
-                fontSize: 15,
-                marginBottom: 8,
-              }}
-            >
+          {/* 받은 후기 리스트 */}
+          <div className="userprofile-reviews-section">
+            <div className="userprofile-reviews-title">
               받은 후기 ({reviewCount})
             </div>
 
             {reviews.length === 0 && (
-              <div
-                style={{
-                  fontSize: 13,
-                  color: "#9ca3af",
-                }}
-              >
+              <div className="userprofile-reviews-empty">
                 아직 받은 후기가 없습니다.
               </div>
             )}
@@ -477,34 +241,29 @@ export default function UserProfile() {
                   : Math.max(0, Math.min(5, Number(rawScore) || 0));
 
               const comment = item.content || item.comment || "내용이 없습니다.";
-
               const createdAt = item.createdAt;
-              const dateLabel = createdAt ? createdAt.slice(0, 10) : "";
+              const dateLabel = createdAt ? String(createdAt).slice(0, 10) : "";
 
               return (
                 <button
                   key={item.id}
                   type="button"
+                  className="userprofile-review-card"
                   onClick={() => nav(`/reviews/${item.id}`)}
-                  style={{
-                    ...styles.reviewCard,
-                    width: "100%",
-                    textAlign: "left",
-                    cursor: "pointer",
-                  }}
                 >
-                  <div style={styles.reviewHeaderRow}>
-                    <div style={styles.reviewName}>
+                  <div className="userprofile-review-header-row">
+                    <div className="userprofile-review-name">
                       {name} · {major}
                     </div>
-                    <div>
+                    <div className="userprofile-review-stars">
                       {Array.from({ length: 5 }).map((_, i) => (
                         <span
                           key={i}
-                          style={{
-                            color: i < rating ? "#fbbf24" : "#e5e7eb",
-                            fontSize: 14,
-                          }}
+                          className={
+                            i < rating
+                              ? "userprofile-review-star filled"
+                              : "userprofile-review-star"
+                          }
                         >
                           ★
                         </span>
@@ -512,9 +271,8 @@ export default function UserProfile() {
                     </div>
                   </div>
 
-                  <div style={styles.reviewBody}>{comment}</div>
-
-                  <div style={styles.reviewDate}>{dateLabel}</div>
+                  <div className="userprofile-review-body">{comment}</div>
+                  <div className="userprofile-review-date">{dateLabel}</div>
                 </button>
               );
             })}

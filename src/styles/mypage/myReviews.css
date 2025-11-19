@@ -1,0 +1,178 @@
+/* 공통 스크롤 숨김 */
+.inner-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.inner-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 전체 프레임 */
+.myreviews-frame {
+  background: #eef2f7;
+  min-height: 100vh;
+}
+
+/* 중앙 랩 */
+.myreviews-wrap {
+  max-width: 420px;
+  margin: 0 auto;
+  height: 100vh;
+  background: #f8fafc;
+  padding: 0 16px 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 상단 바 */
+.myreviews-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 14px 0 8px;
+  flex-shrink: 0;
+}
+
+.myreviews-back-btn {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 4px 6px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.myreviews-top-title {
+  font-weight: 800;
+  font-size: 18px;
+  text-align: center;
+}
+
+/* 내용 영역 */
+.myreviews-inner {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 90px;
+  box-sizing: border-box;
+}
+
+/* 섹션 타이틀 */
+.myreviews-section-title {
+  font-weight: 700;
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+
+/* 작은 텍스트 */
+.myreviews-small-muted {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.myreviews-small-muted-margin {
+  margin-bottom: 6px;
+}
+
+.myreviews-error-text {
+  font-size: 12px;
+  color: #dc2626;
+}
+
+/* 리뷰 카드 (MyPosts/MyFavorites 카드와 톤 맞춤) */
+.myreviews-review-card {
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 14px;
+  margin-top: 10px;
+}
+
+/* 카드 헤더 */
+.myreviews-review-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.myreviews-review-name {
+  font-weight: 700;
+  font-size: 14px;
+  color: #0f172a;
+}
+
+/* 리뷰 본문 */
+.myreviews-review-body {
+  font-size: 13px;
+  color: #111827;
+  margin-top: 4px;
+  white-space: pre-wrap;
+}
+
+/* 날짜 */
+.myreviews-review-date {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+/* 별점 */
+.myreviews-star {
+  color: #e5e7eb;
+  font-size: 14px;
+}
+
+.myreviews-star-active {
+  color: #fbbf24;
+}
+
+/* 하단 탭 바 */
+.myreviews-bottom-wrap {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #ffffff;
+  border-top: 1px solid #e5e7eb;
+}
+
+.myreviews-bottom-inner {
+  max-width: 420px;
+  margin: 0 auto;
+  display: flex;
+}
+
+/* 탭 */
+.myreviews-tab {
+  flex: 1;
+  text-align: center;
+  padding: 8px 0;
+  border-top: 2px solid transparent;
+  color: #94a3b8;
+  font-size: 12px;
+  font-weight: 400;
+  cursor: pointer;
+}
+
+.myreviews-tab.active {
+  border-top-color: #4f46e5;
+  color: #4f46e5;
+  font-weight: 700;
+}
+
+.myreviews-tab-icon {
+  font-size: 20px;
+}
+
+.myreviews-tab-label {
+  font-size: 12px;
+}

@@ -1,0 +1,175 @@
+/* 전체 배경 */
+.chatreview-stage {
+  min-height: 100vh;
+  background: #f1f5f9;
+  display: flex;
+  justify-content: center;
+}
+
+/* 중앙 카드 */
+.chatreview-card {
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  max-height: 820px;
+  background: #ffffff;
+  border-radius: 0;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 상단바 */
+.chatreview-top {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: #ffffff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.chatreview-back-btn {
+  border: 0;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.chatreview-top-title {
+  font-weight: 800;
+}
+
+/* 본문 */
+.chatreview-body {
+  flex: 1;
+  padding: 18px 18px 12px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background: #f9fafb;
+}
+
+.chatreview-loading {
+  text-align: center;
+  margin-top: 40px;
+  color: #9ca3af;
+}
+
+.chatreview-title {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.4;
+  margin-bottom: 18px;
+}
+
+/* 관계 평가 탭 */
+.chatreview-rating-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.chatreview-rating-square {
+  flex: 1;
+  border-radius: 12px;
+  background: #f3f4f6;
+  border: 1px solid #e5e7eb;
+  height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #6b7280;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.chatreview-rating-square.active {
+  background: #eff6ff;
+  border: 2px solid #2563eb;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.chatreview-rating-label {
+  margin-top: 8px;
+}
+
+/* 별점 박스 */
+.chatreview-starbox {
+  border-radius: 16px;
+  background: #eff6ff;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.chatreview-starbox-title {
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.chatreview-star-row {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.chatreview-star {
+  font-size: 26px;
+  cursor: pointer;
+  color: #cbd5f5;
+}
+
+.chatreview-star.active {
+  color: #1d4ed8;
+}
+
+/* 텍스트 영역 */
+.chatreview-textarea-label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.chatreview-textarea-sub {
+  font-size: 12px;
+  color: #9ca3af;
+  margin-left: 4px;
+  font-weight: 400;
+}
+
+.chatreview-textarea {
+  width: 100%;
+  min-height: 120px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  font-size: 13px;
+  resize: none;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+
+/* 하단 버튼 영역 */
+.chatreview-bottom {
+  flex-shrink: 0;
+  padding: 10px 16px 16px;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+}
+
+.chatreview-submit-btn {
+  width: 100%;
+  border-radius: 999px;
+  border: 0;
+  padding: 12px 0;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+}

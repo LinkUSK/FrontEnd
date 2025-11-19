@@ -1,0 +1,358 @@
+/* 공통 스크롤 숨김 (body 스타일은 전역 inject에서 처리됨) */
+.inner-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.inner-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 전체 프레임 */
+.ct-frame {
+  background: #eef2f7;
+  min-height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+}
+
+/* 카드 래퍼 */
+.ct-wrap {
+  max-width: 420px;
+  width: 100%;
+  max-height: 100vh;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+/* 내부 스크롤 영역 */
+.ct-inner {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0 16px 140px;
+  box-sizing: border-box;
+}
+
+/* 타이틀 */
+.ct-top {
+  font-weight: 800;
+  font-size: 22px;
+  padding: 18px 2px 10px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ct-back-btn {
+  border: 0;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px 8px;
+  margin-right: 80px;
+}
+
+/* 라벨, 입력 공통 */
+.ct-label {
+  font-size: 13px;
+  color: #475569;
+  margin-top: 12px;
+  font-weight: 700;
+  display: block;
+}
+
+.ct-field {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.ct-area {
+  width: 100%;
+  min-height: 110px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  resize: vertical;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+/* 메인 제출 버튼 */
+.ct-submit-btn {
+  width: 100%;
+  border: 0;
+  border-radius: 12px;
+  padding: 14px 14px;
+  font-weight: 700;
+  cursor: pointer;
+  background: #4f46e5;
+  color: #ffffff;
+  margin-top: 20px;
+  font-size: 14px;
+}
+.ct-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* 태그 영역 */
+.ct-chip-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+
+/* 태그 칩 기본 */
+.ct-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #111827;
+  white-space: nowrap;
+}
+
+/* 선택된 태그 */
+.ct-chip.active {
+  border-color: #4f46e5;
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+/* AI로 추천된 태그 */
+.ct-chip.ai {
+  border-color: #38bdf8;
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+/* 칩 텍스트 / X 버튼 */
+.ct-chip-text {
+  cursor: pointer;
+}
+.ct-chip-x {
+  font-weight: 900;
+  color: #9ca3af;
+  cursor: pointer;
+}
+
+/* + 새 태그 버튼 */
+.ct-add-btn {
+  border: 0;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+/* AI 태그 버튼 */
+.ct-ai-btn {
+  border: 1px solid rgba(59, 130, 246, 0.8);
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #1d4ed8;
+  font-weight: 800;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  letter-spacing: 0.3px;
+  box-shadow: 0 0 8px rgba(59, 130, 246, 0.45);
+  text-shadow: 0 0 4px rgba(59, 130, 246, 0.45);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  transition: transform 0.12s ease, box-shadow 0.12s ease,
+    background 0.12s ease;
+}
+.ct-ai-btn:disabled {
+  opacity: 0.7;
+  cursor: default;
+}
+
+/* 업로드 영역 */
+.ct-upload-box {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ct-upload-area {
+  width: 160px;
+  height: 160px;
+  border-radius: 24px;
+  border: 1px solid #d1d5db;
+  background: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.ct-upload-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  border: 1px dashed #aaaaaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.ct-upload-guide {
+  font-size: 11px;
+  color: #868e96;
+  margin-top: 2px;
+}
+
+.ct-upload-loading {
+  margin-top: 6px;
+  font-size: 11px;
+  color: #6366f1;
+}
+
+/* 썸네일들 */
+.ct-thumb-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ct-thumb-item {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+  background: #e5e7eb;
+}
+
+.ct-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ct-thumb-remove {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  border: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+/* 모달 오버레이 */
+.ct-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  display: grid;
+  place-items: center;
+  padding: 16px;
+  z-index: 999;
+}
+
+/* 모달 박스 */
+.ct-modal {
+  width: 100%;
+  max-width: 560px;
+  background: #ffffff;
+  border-radius: 18px;
+  border: 2px solid #2563eb;
+  padding: 16px;
+  position: relative;
+  box-sizing: border-box;
+}
+
+/* 모달 닫기 버튼 */
+.ct-modal-close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid #dddddd;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+/* 모달 제목 */
+.ct-modal-title {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+/* 모달 입력 + 버튼 줄 */
+.ct-modal-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+/* 모달 내 "+ 추가" 버튼 */
+.ct-modal-add-btn {
+  border: 1px solid rgba(59, 130, 246, 0.8);
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* 모달 태그 리스트 */
+.ct-modal-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+/* 모달 태그 칩 */
+.ct-modal-chip {
+  padding: 8px 12px;
+  font-size: 13px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  cursor: pointer;
+}
+.ct-modal-chip.active {
+  border-color: #4f46e5;
+  background: #eef2ff;
+}
