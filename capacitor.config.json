@@ -1,0 +1,6 @@
+{
+  "appId": "com.linkus.app",
+  "appName": "LinkUS",
+  "webDir": "dist",
+  "bundledWebRuntime": false
+}

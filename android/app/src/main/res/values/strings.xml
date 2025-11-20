@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">LinkUS</string>
+    <string name="title_activity_main">LinkUS</string>
+    <string name="package_name">com.linkus.app</string>
+    <string name="custom_url_scheme">com.linkus.app</string>
+</resources>

@@ -10,6 +10,10 @@
     "preview": "vite preview --port 3000"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
+    "@capacitor/ios": "^7.4.4",
     "@stomp/stompjs": "^7.2.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
