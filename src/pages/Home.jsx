@@ -292,7 +292,7 @@ export default function Home() {
             {avatarSrc ? (
               <img src={avatarSrc} alt="avatar" className="home-avatarImg" />
             ) : (
-              "👤"
+              <div className="home-avatarInitial"/>
             )}
           </div>
 

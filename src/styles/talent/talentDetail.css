@@ -45,9 +45,10 @@
 }
 
 .talent-back-btn {
+  width: 24px;
+  height: 24px;
   border: 0;
   background: transparent;
-  font-size: 20px;
   cursor: pointer;
 }
 

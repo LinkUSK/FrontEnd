@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/talent/createTalent.css";
+import backIcon from '/images/back-icon.png'
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -348,13 +349,12 @@ export default function CreateTalent() {
       <div className="ct-wrap">
         <div className="inner-scroll ct-inner">
           <div className="ct-top">
-            <button
-              type="button"
+            <img
+              src={backIcon}
+              alt="back"
               className="ct-back-btn"
               onClick={() => nav("/home")}
-            >
-              ←
-            </button>
+            />
             재능 등록하기
           </div>
 

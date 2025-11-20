@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import "../styles/talent/talentDetail.css";
+import backIcon from '/images/back-icon.png'
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -391,14 +392,12 @@ export default function TalentDetail() {
       <div className="talent-card">
         {/* 상단 바 */}
         <div className="talent-topbar">
-          <button
-            type="button"
+          <img
+            src={backIcon}
+            alt="back"
             className="talent-back-btn"
             onClick={() => nav(-1)}
-          >
-            ←
-          </button>
-
+          />
           <div className="talent-top-title">상세정보</div>
 
           {me && (

@@ -3,6 +3,10 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
 import "../styles/mypage/my.css";
+import changeIcon from '/images/change-icon.png'
+import articleIton from '/images/article-icon.png'
+import linkuIcon from '/images/linku-icon.png'
+import starIcon from '/images/star-icon.png'
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -203,7 +207,7 @@ export default function My() {
                     onError={() => setAvatarSrc("")}
                   />
                 ) : (
-                  "👤"
+                  <div className="mypage-avatar-initial"/>
                 )}
               </div>
 
@@ -238,13 +242,15 @@ export default function My() {
             </div>
 
             {/* ✅ 프로필 수정 페이지로 이동 */}
-            <button
-              className="mypage-edit-profile-btn"
-              onClick={() => nav("/my/edit")}
-            >
-              <span>📝</span>
-              <span>프로필 수정</span>
-            </button>
+            <div className="mypage-edit-profile-wrap">
+              <button
+                className="mypage-edit-profile-btn"
+                onClick={() => nav("/my/edit")}
+              >
+                <img src={changeIcon} alt="change" className="mypage-edit-icon"/>
+                <span>프로필 수정</span>
+              </button>
+            </div>
 
             <div className={msgClass}>{msg.text}</div>
 
@@ -256,7 +262,7 @@ export default function My() {
                 onClick={() => nav("/my/reviews")}
               >
                 <div className="mypage-menu-left">
-                  <span className="mypage-menu-icon">📝</span>
+                  <img src={changeIcon} className="mypage-menu-icon"/>
                   <span>받은 후기</span>
                 </div>
                 <span className="mypage-menu-arrow">›</span>
@@ -268,7 +274,7 @@ export default function My() {
                 onClick={() => nav("/my/posts")}
               >
                 <div className="mypage-menu-left">
-                  <span className="mypage-menu-icon">📄</span>
+                  <img src={articleIton} className="mypage-menu-icon" />
                   <span>내 게시물</span>
                 </div>
                 <span className="mypage-menu-arrow">›</span>
@@ -280,7 +286,7 @@ export default function My() {
                 onClick={() => nav("/my/links")}
               >
                 <div className="mypage-menu-left">
-                  <span className="mypage-menu-icon">👥</span>
+                  <img src={linkuIcon} className="mypage-menu-icon"/>
                   <span>내 링크유</span>
                 </div>
                 <span className="mypage-menu-arrow">›</span>
@@ -292,7 +298,7 @@ export default function My() {
                 onClick={() => nav("/my/favorites")}
               >
                 <div className="mypage-menu-left">
-                  <span className="mypage-menu-icon">⭐</span>
+                  <img src={starIcon} className="mypage-menu-icon"/>
                   <span>즐겨찾기 목록</span>
                 </div>
                 <span className="mypage-menu-arrow">›</span>
