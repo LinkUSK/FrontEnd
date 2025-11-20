@@ -4,6 +4,8 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { Client } from "@stomp/stompjs";
 import SockJS from "sockjs-client";
 import "../styles/chat/chatRoom.css";
+import backIcon from '/images/back-icon.png'
+import sideButton from '/images/side-button.png'
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -628,12 +630,12 @@ export default function ChatRoom() {
       <div className="chatroom-card">
         {/* 상단바 */}
         <div className="chatroom-top">
-          <button
+          <img
+            src={backIcon}
+            alt="뒤로가기"
             className="chatroom-back-btn"
             onClick={() => nav("/chat")}
-          >
-            ←
-          </button>
+          />
 
           {otherUser ? (
             <div
@@ -655,7 +657,7 @@ export default function ChatRoom() {
                     }}
                   />
                 ) : (
-                  "👤"
+                  <div className="chatroom-top-avatar-fallback"/>
                 )}
               </div>
               <div className="chatroom-top-namebox">
@@ -683,12 +685,12 @@ export default function ChatRoom() {
             </button>
 
             <span className="chatroom-status-text">{statusLabel()}</span>
-            <button
+            <img
+              src={sideButton}
+              alt="메뉴"
               className="chatroom-menu-btn"
               onClick={() => setMenuOpen((v) => !v)}
-            >
-              ☰
-            </button>
+            />
           </div>
 
           {menuOpen && (
@@ -991,7 +993,7 @@ export default function ChatRoom() {
                             }}
                           />
                         ) : (
-                          "👤"
+                          <div/>
                         )}
                       </div>
                     ) : (

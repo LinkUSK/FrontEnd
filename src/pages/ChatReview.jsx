@@ -2,6 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import "../styles/chat/chatReview.css";
+import backIcon from '/images/back-icon.png'
+import goodIcon from '/images/good-icon.png'
+import badIcon from '/images/bad-icon.png'
+import sosoIcon from '/images/soso-icon.png'
+import fullStar from '/images/full-star.png'
+import emptyStar from '/images/empty-star.png'
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -108,12 +114,12 @@ export default function ChatReview() {
       <div className="chatreview-card">
         {/* 상단바 */}
         <div className="chatreview-top">
-          <button
+          <img
+            src={backIcon}
+            alt="뒤로가기"
             onClick={() => nav(-1)}
             className="chatreview-back-btn"
-          >
-            ←
-          </button>
+          />
           <div className="chatreview-top-title">후기 남기기</div>
         </div>
 
@@ -129,6 +135,24 @@ export default function ChatReview() {
                 {otherName}님과 링크유는 어떠셨나요?
               </div>
 
+              {/* 친절도 별점 */}
+              <div className="chatreview-starbox">
+                <div className="chatreview-starbox-title">
+                  {otherName}님은 친절하셨나요?
+                </div>
+                <div className="chatreview-star-row">
+                  {[1, 2, 3, 4, 5].map((v) => (
+                    <img
+                      key={v}
+                      src={v <= kindnessScore ? fullStar : emptyStar}
+                      alt={`${v} star`}
+                      className="chatreview-star"
+                      onClick={() => setKindnessScore(v)}
+                    />
+                  ))}
+                </div>
+              </div>
+
               {/* 상단 세 가지 선택 */}
               <div className="chatreview-rating-tabs">
                 <div
@@ -138,7 +162,7 @@ export default function ChatReview() {
                   }
                   onClick={() => setRelationRating("BAD")}
                 >
-                  <div>😢</div>
+                  <img src={badIcon} className="icon" alt="별로예요" />
                   <div className="chatreview-rating-label">별로예요</div>
                 </div>
                 <div
@@ -148,7 +172,7 @@ export default function ChatReview() {
                   }
                   onClick={() => setRelationRating("GOOD")}
                 >
-                  <div>🙂</div>
+                  <img src={sosoIcon} className="icon" alt="좋아요" />
                   <div className="chatreview-rating-label">좋아요</div>
                 </div>
                 <div
@@ -158,29 +182,8 @@ export default function ChatReview() {
                   }
                   onClick={() => setRelationRating("BEST")}
                 >
-                  <div>🤩</div>
+                  <img src={goodIcon} className="icon" alt="최고예요" />
                   <div className="chatreview-rating-label">최고예요</div>
-                </div>
-              </div>
-
-              {/* 친절도 별점 */}
-              <div className="chatreview-starbox">
-                <div className="chatreview-starbox-title">
-                  {otherName}님은 친절하셨나요?
-                </div>
-                <div className="chatreview-star-row">
-                  {[1, 2, 3, 4, 5].map((v) => (
-                    <span
-                      key={v}
-                      className={
-                        "chatreview-star" +
-                        (v <= kindnessScore ? " active" : "")
-                      }
-                      onClick={() => setKindnessScore(v)}
-                    >
-                      ★
-                    </span>
-                  ))}
                 </div>
               </div>
 

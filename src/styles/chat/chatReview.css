@@ -34,7 +34,8 @@
 .chatreview-back-btn {
   border: 0;
   background: transparent;
-  font-size: 20px;
+  width: 24px;
+  height: 24px;
   cursor: pointer;
 }
 
@@ -74,7 +75,7 @@
 .chatreview-rating-square {
   flex: 1;
   border-radius: 12px;
-  background: #f3f4f6;
+  background: #ffffff;
   border: 1px solid #e5e7eb;
   height: 80px;
   display: flex;
@@ -88,7 +89,7 @@
 }
 
 .chatreview-rating-square.active {
-  background: #eff6ff;
+  background: #ffffff;
   border: 2px solid #2563eb;
   color: #1d4ed8;
   font-weight: 700;
@@ -119,9 +120,10 @@
 }
 
 .chatreview-star {
-  font-size: 26px;
+  width: 32px;
+  height: 32px;
   cursor: pointer;
-  color: #cbd5f5;
+  margin-right: 4px;
 }
 
 .chatreview-star.active {
@@ -164,12 +166,17 @@
 
 .chatreview-submit-btn {
   width: 100%;
-  border-radius: 999px;
+  border-radius: 8px;
+  background: #155DFC;
   border: 0;
   padding: 12px 0;
-  background: #2563eb;
   color: #ffffff;
   font-weight: 700;
   font-size: 15px;
   cursor: pointer;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
 }
