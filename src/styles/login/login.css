@@ -31,31 +31,34 @@
 .login-logoBox {
   display: flex;
   justify-content: center;
-  margin-left: 30px;
+}
 
-  .login-logo {
-    width: 96px;
-    height: 96px;
-    margin-bottom: 12px;
-  }
-  .lobin-title-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    .login-title {
-      width: 100px;
-      height: auto;
-    }
-    .login-subtitle {
-      width: 100px;
-      height: auto;
-      margin-bottom: 8px;
-    }
-    .login-title {
-      width: 100px;
-      height: 50px;
-    }
-  }
+/* 로고 - 개별 선택자(원래는 중첩된 SCSS 스타일을 일반 CSS로 풀어 작성) */
+.login-logo {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 20px;
+  object-fit: contain;
+}
+
+.login-title-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login-subtitle {
+  width: 140px; /* 필요에 따라 조정하세요 */
+  height: auto;
+  margin-bottom: 8px;
+  margin-top: 8px;
+  object-fit: contain;
+}
+
+.login-title {
+  width: 160px; /* 필요에 따라 조정하세요 */
+  height: auto;
+  object-fit: contain;
 }
 
 .login-logoInner {

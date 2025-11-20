@@ -2,6 +2,10 @@
 import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/signUp.css"; 
+import backIcon from '/images/back-icon.png'
+import upLoadIcon from '/images/upload-icon.png'
+import profileIcon from '/images/profile-default-icon.png'
+import mailIcon from '/images/mail-icon.png'
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -78,6 +82,7 @@ async function uploadFile(file) {
 export default function Signup() {
   const nav = useNavigate();
 
+  const [grade, setGrade] = useState("");
   const [emailLocal, setEmailLocal] = useState("");
   const emailDomain = "@skuniv.ac.kr";
   const [password, setPassword] = useState("");
@@ -250,9 +255,7 @@ export default function Signup() {
       <div className="signup-card">
         {/* 헤더 */}
         <div className="signup-headerRow">
-          <button onClick={() => nav(-1)} className="signup-backBtn">
-            ←
-          </button>
+          <img onClick={() => nav(-1)} src={backIcon} alt="Back" className="signup-backBtn" />
           <div className="signup-title">회원가입</div>
         </div>
 
@@ -279,14 +282,17 @@ export default function Signup() {
             </div>
 
             <div className="signup-emailActionsRow">
-              <button
-                type="button"
-                onClick={handleSendCode}
-                disabled={!canSend}
-                className="signup-ghostBtn signup-sendCodeBtn"
-              >
-                {sending ? "전송 중…" : "인증하기"}
-              </button>
+              <div className="signup-emailBtn">
+                <button
+                  type="button"
+                  onClick={handleSendCode}
+                  disabled={!canSend}
+                  className="signup-ghostBtn signup-sendCodeBtn"
+                >
+                  <img src={mailIcon} alt="Mail" className="signup-mailIcon" />
+                  {sending ? "전송 중…" : "인증하기"}
+                </button>
+              </div>
 
               {sent && !verified && (
                 <div className="signup-infoCard">
@@ -350,6 +356,22 @@ export default function Signup() {
               onChange={(e) => setMajor(e.target.value)}
             />
 
+            <label className="signup-label">
+              학년 <span className="signup-required">*</span>
+            </label>
+            <select
+              className="signup-input signup-select"
+              value={grade}
+              onChange={(e) => setGrade(e.target.value)}
+            >
+              <option value="">학년 선택</option>
+              <option value="1">1학년</option>
+              <option value="2">2학년</option>
+              <option value="3">3학년</option>
+              <option value="4">4학년</option>
+              <option value="5">5학년 이상</option>
+            </select>
+
             <div className="signup-photoBlock">
               <div className="signup-label">프로필 사진</div>
               <div className="signup-photoSection">
@@ -361,7 +383,7 @@ export default function Signup() {
                       className="signup-photoImg"
                     />
                   ) : (
-                    <div className="signup-photoPlaceholder">📷</div>
+                    <img src={profileIcon} className="signup-profile-icon" />
                   )}
                 </div>
                 <input
@@ -376,7 +398,8 @@ export default function Signup() {
                   className="signup-uploadBtn"
                   onClick={() => fileInputRef.current?.click()}
                 >
-                  ⬆ 업로드
+                  <img src={upLoadIcon} alt="Upload" className="signup-uploadIcon" />
+                  업로드
                 </button>
               </div>
             </div>
