@@ -71,10 +71,9 @@
 
 /* 폼 / 스크롤 영역 */
 .signup-form {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  min-height: 0;
+  height: 100%;
 }
 
 .signup-scrollArea {
@@ -116,6 +115,7 @@
 
 .signup-inputRow {
   display: grid;
+  height: 36px;
   grid-template-columns: 1fr auto;
   align-items: stretch;
 }
@@ -142,9 +142,11 @@
 /* 이메일 인증 버튼/정보 영역 */
 .signup-emailActionsRow {
   display: flex;
+  flex-direction: column; 
+  align-items: center;   
+  justify-content: center; 
   gap: 8px;
   margin-top: 8px;
-  align-items: center;
 }
 
 .signup-emailBtn {
@@ -191,6 +193,7 @@
 
 /* 인증 메일 안내 카드 */
 .signup-infoCard {
+  width: 100%;
   flex: 1;
   border: 1px solid #e5e7eb;
   background: #f1f5ff;
@@ -201,6 +204,7 @@
   align-content: center;
   justify-items: center;
   box-sizing: border-box;
+  margin-bottom: 20px;
 }
 
 .signup-infoCardText {
@@ -224,11 +228,7 @@
 .signup-badgeOk {
   flex: 1;
   display: grid;
-  place-items: center;
-  border-radius: 12px;
-  border: 1px solid #a7f3d0;
-  background: #ecfdf5;
-  color: #065f46;
+  color: #00A63E;
   font-size: 12px;
   font-weight: 700;
   box-sizing: border-box;
@@ -308,6 +308,7 @@
   cursor: pointer;
   margin-top: 8px;
   box-sizing: border-box;
+
 }
 
 .signup-primaryBtn:disabled {
@@ -317,7 +318,7 @@
 
 /* 다음 버튼 (하단) */
 .signup-nextBtn {
-  margin-top: 10px;
+  margin-top: auto;
 }
 
 /* 오버레이 / 인증 코드 카드 */
@@ -368,6 +369,8 @@
   display: grid;
   place-items: center;
   padding: 40px 10px 20px;
+  margin-top: auto;
+  margin-bottom: 50px;
 }
 
 .signup-completedIcon {

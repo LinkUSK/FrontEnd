@@ -6,6 +6,7 @@ import backIcon from '/images/back-icon.png'
 import upLoadIcon from '/images/upload-icon.png'
 import profileIcon from '/images/profile-default-icon.png'
 import mailIcon from '/images/mail-icon.png'
+import signupIcon from '/images/signup-icon.png'
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -221,17 +222,17 @@ export default function Signup() {
       <div className="signup-stage">
         <div className="signup-card">
           <div className="signup-headerRow">
-            <button
+            <img
+              src={backIcon}
+              alt="Back"
               onClick={() => setCompleted(false)}
               className="signup-backBtn"
-            >
-              ←
-            </button>
+            />
             <div className="signup-title">회원가입</div>
           </div>
 
           <div className="signup-completedBody">
-            <div className="signup-completedIcon">✔️</div>
+            <img src={signupIcon} className="signup-completedIcon"/>
             <div className="signup-completedText">
               {(username || "").trim() || "회원"}님의
               <br />
@@ -240,7 +241,7 @@ export default function Signup() {
           </div>
 
           <button
-            className="signup-primaryBtn"
+            className="signup-primaryBtn signup-nextBtn"
             onClick={() => nav("/login")}
           >
             로그인
@@ -310,7 +311,7 @@ export default function Signup() {
               )}
 
               {verified && (
-                <div className="signup-badgeOk">✅ 이메일 인증 완료</div>
+                <div className="signup-badgeOk"> 이메일 인증 완료</div>
               )}
             </div>
 
