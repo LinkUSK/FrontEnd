@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/mypage/myFavorites.css";
 import BottomNav from "../components/BottomNav";
+import backIcon from "/images/back-icon.png";
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -135,13 +136,12 @@ export default function MyFavorites() {
       <div className="myfav-wrap">
         {/* 상단 바 */}
         <div className="myfav-top-bar">
-          <button
-            type="button"
+          <img
+            src={backIcon}
+            alt="back"
             className="myfav-back-btn"
             onClick={() => nav(-1)} // 또는 nav("/my")
-          >
-            ←
-          </button>
+          />
           <div className="myfav-top-title">즐겨찾기 목록</div>
         </div>
 

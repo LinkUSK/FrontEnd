@@ -38,6 +38,8 @@
 
 .myreviews-back-btn {
   position: absolute;
+  width: 24px;
+  height: 24px;
   left: 0;
   top: 50%;
   transform: translateY(-50%);

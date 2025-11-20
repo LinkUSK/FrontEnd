@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/mypage/myLinks.css";
 import BottomNav from "../components/BottomNav";
+import backIcon from "/images/back-icon.png";
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -145,13 +146,12 @@ export default function MyLinks() {
       <div className="mylinks-wrap">
         {/* 상단 바 */}
         <div className="mylinks-top-bar">
-          <button
-            type="button"
+          <img
+            src={backIcon}
+            alt="back"
             className="mylinks-back-btn"
             onClick={() => nav(-1)}
-          >
-            ←
-          </button>
+          />
           <div className="mylinks-top-title">내 링크유</div>
         </div>
 

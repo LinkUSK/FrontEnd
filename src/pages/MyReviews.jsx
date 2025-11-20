@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../styles/mypage/myReviews.css";
 import BottomNav from "../components/BottomNav";
+import backIcon from "/images/back-icon.png";
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -124,13 +125,12 @@ export default function MyReviews() {
       <div className="myreviews-wrap">
         {/* 상단 뒤로가기 바 */}
         <div className="myreviews-top-bar">
-          <button
-            type="button"
+          <img
+            src={backIcon}
+            alt="back"
             className="myreviews-back-btn"
             onClick={() => nav(-1)} // 또는 nav("/my")
-          >
-            ←
-          </button>
+          />
           <div className="myreviews-top-title">받은 후기</div>
         </div>
 
