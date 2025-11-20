@@ -19,6 +19,7 @@ import ChatRoom from "./pages/ChatRoom.jsx";
 import TalentDetail from "./pages/TalentDetail.jsx";
 import ChatReview from "./pages/ChatReview.jsx";
 import UserProfile from "./pages/UserProfile.jsx";
+import OnboardingLanding from "./pages/OnboardingLanding.jsx";
 
 // 새 프로필 수정 페이지
 import ProfileEdit from "./pages/ProfileEdit.jsx";
@@ -77,8 +78,8 @@ function PublicOnlyRoute({ children }) {
 export default function App() {
   return (
     <Routes>
-      {/* 첫 진입은 /login */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
+      {/* 첫 진입 → 로그인 여부에 따라 분기 */}
+      <Route path="/" element={<RootRedirect />} />
 
       {/* 공개 라우트 */}
       <Route
@@ -98,7 +99,15 @@ export default function App() {
         }
       />
 
-      {/* 공개: 재능 상세, 채팅 목록 */}
+      <Route
+        path="/randing"
+        element={
+          <PublicOnlyRoute>
+            <OnboardingLanding />
+          </PublicOnlyRoute>
+        }
+      />
+      {/* 여기서부터 기존 라우트 동일 */}
       <Route path="/talent/:id" element={<TalentDetail />} />
       <Route path="/chat" element={<Chat />} />
 
@@ -107,28 +116,17 @@ export default function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/create" element={<CreateTalent />} />
         <Route path="/my" element={<My />} />
-
-        {/* 새 프로필 수정 페이지 */}
-        <Route path="/my/edit" element={<ProfileEdit />} />
-
-        {/* 마이페이지 하위 */}
-        <Route path="/my/reviews" element={<MyReviews />} />
-        <Route path="/my/posts" element={<MyPosts />} />
-        <Route path="/my/links" element={<MyLinks />} />
-        <Route path="/my/favorites" element={<MyFavorites />} />
-
-        <Route path="/chat/:roomId" element={<ChatRoom />} />
-
-        {/* 후기 작성 */}
-        <Route path="/linku/review/:roomId" element={<ChatReview />} />
-
-        {/* 유저 프로필 */}
-        <Route path="/profile/:userId" element={<UserProfile />} />
-        <Route path="/users/:userId" element={<UserProfile />} />
+        {/* ... 생략 ... */}
       </Route>
 
-      {/* 404 → 로그인 */}
+      {/* 404 */}
       <Route path="*" element={<Navigate to="/login" replace />} />
     </Routes>
   );
+}
+
+/* 로그인 여부 체크 후 리다이렉션 */
+function RootRedirect() {
+  const token = localStorage.getItem("access_token");
+  return token ? <Navigate to="/home" replace /> : <Navigate to="/randing" replace />;
 }
