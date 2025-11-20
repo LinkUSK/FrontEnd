@@ -3,6 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
 import "../styles/home.css";
+import linkuLogoTitle from '/images/LinkU_Title.png'
+import searchIcon from '/images/search-icon.png'
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
@@ -364,11 +366,13 @@ export default function Home() {
     <div className="home-frame">
       <div className="home-wrap">
         <div className="inner-scroll home-inner">
-          <div className="home-top">CampusLink</div>
+          <div className="home-top">
+            <img src={linkuLogoTitle} className="home-logo" />
+          </div>
 
           {/* 🔍 기본 검색창 */}
           <div className="home-search">
-            <span className="home-searchIcon">🔍</span>
+            <img src={searchIcon} className="home-searchIcon"/>
             <input
               className="home-searchInput"
               placeholder="재능, 전공, 키워드, #태그 검색"
@@ -376,9 +380,6 @@ export default function Home() {
               onChange={(e) => setQDisplay(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && onSearch()}
             />
-            <button onClick={onSearch} className="home-searchBtn">
-              검색
-            </button>
           </div>
 
           {/* ✨ AI 추천 검색 버튼 */}
