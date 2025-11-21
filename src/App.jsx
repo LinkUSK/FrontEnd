@@ -119,6 +119,7 @@ export default function App() {
         <Route path="/profile/:userId" element={<UserProfile />} />
         <Route path="/chat/:roomId" element={<ChatRoom />} />
         <Route path="/chat/review/:chatId" element={<ChatReview />} />
+        <Route path="/my/edit" element={<UserProfile />} />
 
         {/* 로그인 필요하면 여기로 */}
         <Route path="/talent/:id" element={<TalentDetail />} />
