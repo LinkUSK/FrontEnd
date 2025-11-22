@@ -235,9 +235,6 @@ export default function My() {
                 <button onClick={logout} className="mypage-btn-primary">
                   로그아웃
                 </button>
-                <button onClick={deleteAccount} className="mypage-btn-danger">
-                  회원 탈퇴
-                </button>
               </div>
             </div>
 

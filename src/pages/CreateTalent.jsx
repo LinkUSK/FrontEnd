@@ -158,7 +158,6 @@ export default function CreateTalent() {
       if (baseTags.length === 0) {
         const temp = await apiGet("/api/meta/tags", { category });
         baseTags = temp;
-        setAvailTags(temp);
       }
 
       const addedIds = [];
@@ -175,6 +174,12 @@ export default function CreateTalent() {
         if (exists) {
           addedIds.push(exists.id);
           newAiIds.push(exists.id);
+
+          // ✅ exists가 현재 availTags에 없으면(전체 태그를 안 넣었으니까)
+          // AI가 선택한 것만 availTags에 추가
+          setAvailTags((prev) =>
+            prev.some((p) => p.id === exists.id) ? prev : [...prev, exists]
+          );
         } else {
           try {
             const created = await apiPost("/api/meta/tags", {

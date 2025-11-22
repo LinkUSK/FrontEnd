@@ -3,23 +3,11 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import BottomNav from "../components/BottomNav";
 import "../styles/home.css";
-import linkuLogoTitle from '/images/LinkU_Title.png'
-import searchIcon from '/images/search-icon.png'
+import linkuLogoTitle from "/images/LinkU_Title.png";
+import searchIcon from "/images/search-icon.png";
 
 const API_BASE = "http://localhost:8080";
 const TOKEN_KEY = "access_token";
-
-// 🔹 홈 화면에서 쓸 "인기 태그" 목록 (원하는 걸로 수정해서 사용)
-const POPULAR_TAGS = [
-  "웹 개발",
-  "디자인",
-  "영상 편집",
-  "사진 촬영",
-  "프론트엔드",
-  "백엔드",
-  "취업 포트폴리오",
-  "팀프로젝트",
-];
 
 // 🔹 공통 스타일 주입 (세로/가로 스크롤바 숨김)
 (function injectInnerScrollStyle() {
@@ -70,10 +58,9 @@ export default function Home() {
   const [me, setMe] = useState(null);
   const observer = useRef(null);
 
-  // ✨ AI 추천 검색: tags만 사용
-  const [aiTags, setAiTags] = useState([]);
-  const [aiLoading, setAiLoading] = useState(false);
-  const [aiOpen, setAiOpen] = useState(false);
+  // ✅ 인기 태그 = AI 추천 tags로 대체
+  const [popularTags, setPopularTags] = useState([]);
+  const [popularLoading, setPopularLoading] = useState(false);
 
   function authHeaders() {
     const token = localStorage.getItem(TOKEN_KEY);
@@ -105,11 +92,13 @@ export default function Home() {
   useEffect(() => {
     (async () => {
       try {
-        setMe(await apiGet("/api/me"));
+        const meData = await apiGet("/api/me");
+        setMe(meData);
       } catch {
         // 비로그인일 수도 있음
       }
     })();
+
     fetchPosts(0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -178,40 +167,57 @@ export default function Home() {
     fetchPosts(0, { q: effective });
   };
 
-  /* ================== AI 추천 검색 ================== */
+  /* ================== ✅ 인기 태그(AI tags) 가져오기 ================== */
 
-  async function fetchAiSuggest() {
-    try {
-      setAiLoading(true);
-      const raw = (qDisplay || "").trim();
-      const effective = raw.startsWith("#") ? raw.slice(1).trim() : raw;
+  const FALLBACK_TAGS = [
+  "웹 개발",
+  "디자인",
+  "영상 편집",
+  "사진 촬영",
+  "프론트엔드",
+  "백엔드",
+  "취업 포트폴리오",
+  "팀프로젝트",
+];
 
-      const params = {
-        q: effective || " ",
-      };
-      if (me?.major) params.major = me.major;
+async function fetchPopularTags() {
+  try {
+    setPopularLoading(true);
 
-      const data = await apiGet("/api/ai/search-suggest", params);
-      const tags = Array.isArray(data?.tags) ? data.tags : [];
-      const cleaned = Array.from(
-        new Set(
-          tags
-            .map((t) => (t ?? "").toString().trim())
-            .filter((t) => t.length > 0)
-        )
-      );
-      setAiTags(cleaned);
-    } catch (e) {
-      console.error("ai search suggest error", e);
-    } finally {
-      setAiLoading(false);
+    const params = { q: " " };
+    if (me?.major) params.major = me.major;
+
+    const data = await apiGet("/api/ai/search-suggest", params);
+
+    const tags = Array.isArray(data?.tags) ? data.tags : [];
+
+    const cleaned = Array.from(
+      new Set(
+        tags
+          .map((t) => (t ?? "").toString().trim())
+          .filter((t) => t.length > 0)
+      )
+    );
+
+    if (cleaned.length > 0) {
+      setPopularTags(cleaned);
+    } else {
+      setPopularTags(FALLBACK_TAGS);
     }
-  }
 
-  const handleAiClick = async () => {
-    if (!aiOpen) setAiOpen(true);
-    await fetchAiSuggest();
-  };
+  } catch (e) {
+    console.error("popular tags(ai) error", e);
+    setPopularTags(FALLBACK_TAGS);
+  } finally {
+    setPopularLoading(false);
+  }
+}
+
+  // me(전공) 로드되면 인기 태그 재로딩
+  useEffect(() => {
+    fetchPopularTags();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [me?.major]);
 
   /* ================== 게시글 카드 ================== */
 
@@ -228,6 +234,7 @@ export default function Home() {
       : item.tagId
       ? [item.tagId]
       : [];
+
     const avatarSrc = toAbs(
       item.authorProfileImageUrl || item.profileImageUrl || item.avatarUrl
     );
@@ -292,7 +299,7 @@ export default function Home() {
             {avatarSrc ? (
               <img src={avatarSrc} alt="avatar" className="home-avatarImg" />
             ) : (
-              <div className="home-avatarInitial"/>
+              <div className="home-avatarInitial" />
             )}
           </div>
 
@@ -316,9 +323,7 @@ export default function Home() {
               {rating != null && (
                 <div className="home-ratingRow">
                   <span className="home-ratingStar">★</span>
-                  <span className="home-ratingValue">
-                    {rating.toFixed(1)}
-                  </span>
+                  <span className="home-ratingValue">{rating.toFixed(1)}</span>
                 </div>
               )}
             </div>
@@ -367,12 +372,12 @@ export default function Home() {
       <div className="home-wrap">
         <div className="inner-scroll home-inner">
           <div className="home-top">
-            <img src={linkuLogoTitle} className="home-logo" />
+            <img src={linkuLogoTitle} className="home-logo" alt="logo" />
           </div>
 
           {/* 🔍 기본 검색창 */}
           <div className="home-search">
-            <img src={searchIcon} className="home-searchIcon"/>
+            <img src={searchIcon} className="home-searchIcon" alt="search" />
             <input
               className="home-searchInput"
               placeholder="재능, 전공, 키워드, #태그 검색"
@@ -382,49 +387,14 @@ export default function Home() {
             />
           </div>
 
-          {/* ✨ AI 추천 검색 버튼 */}
-          <button className="home-aiButton" onClick={handleAiClick}>
-            <div className="home-aiIcon">AI</div>
-            <div>
-              <div>AI 추천 검색</div>
-              <div className="home-aiButtonSub">
-                내 전공과 키워드로 팀원을 추천해줘요
-              </div>
-            </div>
-            {aiLoading && (
-              <span className="home-aiLoadingText">불러오는 중...</span>
-            )}
-          </button>
-
-          {/* ✨ AI 추천 검색어 */}
-          {aiOpen && aiTags.length > 0 && (
-            <div>
-              <div className="home-sectionTitle">AI 추천 검색어</div>
-              <div className="horizontal-scroll home-horizontalScroll">
-                {aiTags.map((name, idx) => (
-                  <span
-                    key={`ai-tag-${idx}`}
-                    className="home-blueChip"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      runSearchWithKeyword(name, { showInInput: true });
-                    }}
-                  >
-                    {name}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* 🔥 인기 태그 */}
-          {POPULAR_TAGS.length > 0 && (
+          {/* 🔥 인기 태그 = AI 추천 tags */}
+          {popularTags.length > 0 && (
             <div>
               <div className="home-sectionTitle">인기 태그</div>
               <div className="horizontal-scroll home-horizontalScroll">
-                {POPULAR_TAGS.map((name) => (
+                {popularTags.map((name, idx) => (
                   <span
-                    key={name}
+                    key={`popular-${name}-${idx}`}
                     className="home-popularChip"
                     onClick={(e) => {
                       e.stopPropagation();
@@ -436,6 +406,10 @@ export default function Home() {
                 ))}
               </div>
             </div>
+          )}
+
+          {popularLoading && (
+            <div className="home-loading">인기 태그 불러오는 중...</div>
           )}
 
           {/* 기존 tagId 필터 해제 버튼 */}
@@ -481,9 +455,7 @@ export default function Home() {
             ))}
           </div>
 
-          {loading && (
-            <div className="home-loading">불러오는 중...</div>
-          )}
+          {loading && <div className="home-loading">불러오는 중...</div>}
         </div>
 
         <BottomNav active="home" />
